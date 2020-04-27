@@ -1,26 +1,47 @@
 import React from 'react';
-import logo from './logo.svg';
+import styled from "styled-components"
+import { Sudoku} from './components/sudoku';
 import './App.css';
+
+const sudokuData = {
+  width: 9,
+  height: 9,
+  groupWidth: 3,
+  groupHeight: 3,
+  values: [
+      [0,0,4,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,8,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,7,0,0,0,0,0,0],
+      [0,2,0,0,3,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,5,6,0,0,0,0,0,0],
+      [0,0,0,0,0,0,9,0,0]
+  ],
+  locked: [
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0]
+  ],
+}
+
+const PageWrapper = styled.div({
+  padding: "40px"
+})
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <PageWrapper>
+      <Sudoku data={sudokuData}/>
+    </PageWrapper>
   );
 }
 
-export default App;
+export default App
