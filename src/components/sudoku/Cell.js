@@ -22,7 +22,11 @@ const CellText = styled.p({
     textAlign: "center",
     userSelect: "none",
     margin: "auto"
-})
+    },
+    ({locked})=>({
+        fontWeight: locked ? 500 : 400
+    })
+)
 
 const Cell = ({
         selected,
@@ -39,7 +43,7 @@ const Cell = ({
             onMouseEnter={(e) => handleMouseEnter(e, xLoc, yLoc)}
             selected={selected}
             {...props}>
-            <CellText>
+            <CellText locked={locked}>
                 {value === 0 ? " " : value}
             </CellText>
         </CellDiv>

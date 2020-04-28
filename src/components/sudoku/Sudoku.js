@@ -19,6 +19,7 @@ const mapCells = (data,gri,gci,i,passToCell) => {
               handleMouseDown={passToCell.handleMouseDown}
               handleMouseEnter={passToCell.handleMouseEnter}
               selected={passToCell.selected[x][y]}
+              locked={passToCell.locked[x][y]}
             />
         )
     }
@@ -80,7 +81,7 @@ const Sudoku = ({data}) => {
         let newValues = [...values]
         values.forEach((row,i)=>{
             row.forEach((cell,j)=>{
-                if(selected[i][j]) {
+                if(selected[i][j] && !data.locked[i][j]) {
                     newValues[i][j] = value
                 }
             })
@@ -100,7 +101,8 @@ const Sudoku = ({data}) => {
         handleMouseDown: handleCellMouseDown,
         handleMouseEnter: handleCellMouseEnter,
         selected,
-        values
+        values,
+        locked: data.locked
     }
 
     return (
