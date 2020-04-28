@@ -1,6 +1,9 @@
 import React from "react"
 import CellGroup from "./CellGroup"
 import Cell from "./Cell"
+import styled from "styled-components"
+
+const SudokuBoard = styled.div({})
 
 const mapCells = (data,gri,gci,i,passToCell) => {
     let elementArray = new Array(data.groupWidth)
@@ -39,17 +42,22 @@ const Sudoku = ({data}) => {
     const falseArray = Array(data.height).fill().map(() => Array(data.width).fill(false))
 
     const [selected, setSelected] = React.useState(falseArray)
+    const [selectMode, setSelectMode] = React.useState(true)
+
 
     const handleCellMouseDown = (e,x,y) => {
         if (e.buttons === 1)
         {
-            if (!selected[x][y]) {
-                let newSelected = [...falseArray]
-                newSelected[x][y] = true
-                setSelected(newSelected)
-            } else {
+            if (e.ctrlKey) {
+                setSelectMode(!selected[x][y])
+                console.log(selectMode)
                 let newSelected = [...selected]
                 newSelected[x][y] = !selected[x][y]
+                setSelected(newSelected)
+            } else {
+                setSelectMode(true)
+                let newSelected = [...falseArray]
+                newSelected[x][y] = true
                 setSelected(newSelected)
             }
         }
@@ -58,8 +66,9 @@ const Sudoku = ({data}) => {
     const handleCellMouseEnter = (e,x,y) => {
         if (e.buttons === 1)
         {
+            console.log(selectMode)
             let newSelected = [...selected]
-            newSelected[x][y] = true
+            newSelected[x][y] = selectMode
             setSelected(newSelected)
         }
     }
@@ -71,7 +80,7 @@ const Sudoku = ({data}) => {
     }
 
     return (
-        <div>
+        <SudokuBoard>
             {[...Array(data.height/data.groupHeight)].map((e,gri)=>(
                 <div style={{display: "flex"}} key={`GroupRow ${gri}`}>
                     {[...Array(data.width/data.groupHeight)].map((e,gci)=>(
@@ -81,7 +90,7 @@ const Sudoku = ({data}) => {
                     ))}
                 </div>
             ))}
-        </div>
+        </SudokuBoard>
     )
 }
 

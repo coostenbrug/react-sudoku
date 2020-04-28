@@ -34,7 +34,7 @@ const Cell = ({
         yLoc
     }, props) => {
     return (
-        <CellDiv 
+        <CellDiv
             onMouseDown={(e) => handleMouseDown(e, xLoc, yLoc)}
             onMouseEnter={(e) => handleMouseEnter(e, xLoc, yLoc)}
             selected={selected}
