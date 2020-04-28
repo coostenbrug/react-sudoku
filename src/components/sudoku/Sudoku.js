@@ -15,7 +15,7 @@ const mapCells = (data,gri,gci,i,passToCell) => {
               key={`Cell ${x},${y}`}
               xLoc={x}
               yLoc={y}
-              value={data.values[x][y]}
+              value={passToCell.values[x][y]}
               handleMouseDown={passToCell.handleMouseDown}
               handleMouseEnter={passToCell.handleMouseEnter}
               selected={passToCell.selected[x][y]}
@@ -42,7 +42,14 @@ const Sudoku = ({data}) => {
     const falseArray = Array(data.height).fill().map(() => Array(data.width).fill(false))
 
     const [selected, setSelected] = React.useState(falseArray)
+    const [values, setValues] = React.useState(data.values)
     const [selectMode, setSelectMode] = React.useState(true)
+
+    React.useEffect(() => {
+        document.addEventListener("keydown", handleKeyDown);
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    })
+      
 
     const handleCellMouseDown = (e,x,y) => {
         if (e.buttons === 1) {
@@ -69,10 +76,31 @@ const Sudoku = ({data}) => {
         }
     }
 
+    const setSelectedCellValues = value => {
+        let newValues = [...values]
+        values.forEach((row,i)=>{
+            row.forEach((cell,j)=>{
+                if(selected[i][j]) {
+                    newValues[i][j] = value
+                }
+            })
+        })
+        setValues(newValues)
+    }
+
+    const handleKeyDown = (e) => {
+        if(e.key in [1,2,3,4,5,6,7,8,9]) {
+            setSelectedCellValues(e.key)
+        } else if (e.key === "Delete" || e.key === "Backspace") {
+            setSelectedCellValues("")
+        }
+    }
+
     const passToCell = {
         handleMouseDown: handleCellMouseDown,
         handleMouseEnter: handleCellMouseEnter,
-        selected
+        selected,
+        values
     }
 
     return (
