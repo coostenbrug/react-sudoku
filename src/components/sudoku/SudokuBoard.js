@@ -7,7 +7,7 @@ const SudokuBoardWrap = styled.div({
     margin: "auto"
 })
 
-const SudokuBoard = ({boardData, cellData}) => {
+const SudokuBoard = ({boardData, cellData, cellFunctions}) => {
     const { 
         height,
         groupHeight,
@@ -16,26 +16,24 @@ const SudokuBoard = ({boardData, cellData}) => {
     } = boardData
 
     const {
-        values,
-        selected,
-        locked,
         handleMouseDown,
         handleMouseEnter
-    } = cellData
+    } = cellFunctions
 
     const mapCells = (gri,gci,i) => {
         let elementArray = new Array(boardData.groupWidth)
         for (let j = 0; j < boardData.groupWidth; j++) {
             let x = boardData.groupHeight*gri+i
             let y = boardData.groupWidth*gci+j
+            let cell = cellData[x][y]
             elementArray[j] = (
                 <Cell
                   key={`Cell ${x},${y}`}
                   xLoc={x}
                   yLoc={y}
-                  value={values[x][y]}
-                  selected={selected[x][y]}
-                  locked={locked[x][y]}
+                  value={cell.value}
+                  selected={cell.selected}
+                  locked={cell.locked}
                   handleMouseDown={handleMouseDown}
                   handleMouseEnter={handleMouseEnter}
                 />

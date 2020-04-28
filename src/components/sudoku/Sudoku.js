@@ -6,7 +6,7 @@ const Sudoku = ({data}) => {
     
     const falseArray = Array(data.height).fill().map(() => Array(data.width).fill(false))
 
-    const [selected, setSelected] = React.useState(falseArray)
+    const [cellData, setCellData] = React.useState(data.cellData)
     const [values, setValues] = React.useState(data.values)
     const [selectMode, setSelectMode] = React.useState(true)
 
@@ -20,37 +20,42 @@ const Sudoku = ({data}) => {
         if (e.buttons === 1) {
             e.preventDefault()
             if (e.ctrlKey) {
-                setSelectMode(!selected[x][y])
-                let newSelected = [...selected]
-                newSelected[x][y] = !selected[x][y]
-                setSelected(newSelected)
+                setSelectMode(!cellData[x][y].selected)
+                let newCellData = [...cellData]
+                cellData[x][y].selected = !cellData[x][y].selected
+                setCellData(newCellData)
             } else {
                 setSelectMode(true)
-                let newSelected = [...falseArray]
-                newSelected[x][y] = true
-                setSelected(newSelected)
+                let newCellData = [...cellData]
+                newCellData.forEach((row)=>{
+                    row.forEach((cell)=>{
+                        cell.selected = false
+                    })
+                })
+                newCellData[x][y].selected = true
+                setCellData(newCellData)
             }
         }
     }
 
     const handleCellMouseEnter = (e,x,y) => {
         if (e.buttons === 1) {
-            let newSelected = [...selected]
-            newSelected[x][y] = selectMode
-            setSelected(newSelected)
+            let newCellData = [...cellData]
+            newCellData[x][y].selected = selectMode
+            setCellData(newCellData)
         }
     }
 
     const setSelectedCellValues = value => {
-        let newValues = [...values]
-        values.forEach((row,i)=>{
-            row.forEach((cell,j)=>{
-                if(selected[i][j] && !data.locked[i][j]) {
-                    newValues[i][j] = value
+        let newCellData = [...cellData]
+        newCellData.forEach((row)=>{
+            row.forEach((cell)=>{
+                if(cell.selected && !cell.locked) {
+                    cell.value = value
                 }
             })
         })
-        setValues(newValues)
+        setValues(newCellData)
     }
 
     const handleKeyDown = e => {
@@ -69,24 +74,14 @@ const Sudoku = ({data}) => {
         }
     }
 
-    const cellData = {
+    const cellFunctions = {
         handleMouseDown: handleCellMouseDown,
-        handleMouseEnter: handleCellMouseEnter,
-        selected,
-        values,
-        locked: data.locked
-    }
-
-    const boardData = {
-        height: data.height,
-        groupHeight: data.groupHeight,
-        width: data.width,
-        groupWidth: data.groupWidth
+        handleMouseEnter: handleCellMouseEnter
     }
 
     return(
     <div style={{display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
-        <SudokuBoard boardData={boardData} cellData={cellData}/>
+        <SudokuBoard boardData={data.boardData} cellData={data.cellData} cellFunctions={cellFunctions}/>
         <ControlPanel handleOnClick={handleControlPanelClick}/>
     </div>
 )}

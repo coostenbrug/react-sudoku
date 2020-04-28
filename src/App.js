@@ -2,12 +2,13 @@ import React from 'react';
 import styled from "styled-components"
 import { Sudoku } from './components/sudoku';
 import './App.css';
+import { exampleSudokuData } from "./resources"
 
 const PageWrapper = styled.div({
   padding: "40px"
 })
 
-const sudokuData = {
+/*const sudokuData = {
   width: 9,
   height: 9,
   groupWidth: 3,
@@ -34,12 +35,12 @@ const sudokuData = {
       [0,1,1,0,0,0,0,0,0],
       [0,0,0,0,0,0,1,0,0]
   ],
-}
+}*/
 
 function App() {
   return (
     <PageWrapper>
-      <Sudoku data={sudokuData}/>
+      <Sudoku data={exampleSudokuData}/>
     </PageWrapper>
   );
 }
