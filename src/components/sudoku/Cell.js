@@ -2,7 +2,6 @@ import React from "react"
 import styled from "styled-components"
 
 const CellDiv = styled.div({
-        display: "inline-block",
         border: "solid 1px black"
     },
     ({size})=>({
@@ -19,19 +18,29 @@ CellDiv.defaultProps = {
 }
 
 const CellText = styled.p({
-    display: "inline-block",
+    fontSize: "30px",
+    textAlign: "center",
+    userSelect: "none",
     margin: "auto"
 })
 
-const Cell = ({selected, value}, props) => {
-    const [locked, setLocked] = React.useState(false)
-
+const Cell = ({
+        selected,
+        value,
+        locked,
+        handleMouseDown,
+        handleMouseEnter,
+        xLoc,
+        yLoc
+    }, props) => {
     return (
         <CellDiv 
+            onMouseDown={(e) => handleMouseDown(e, xLoc, yLoc)}
+            onMouseEnter={(e) => handleMouseEnter(e, xLoc, yLoc)}
             selected={selected}
             {...props}>
             <CellText>
-                {value}
+                {value === 0 ? " " : value}
             </CellText>
         </CellDiv>
     )

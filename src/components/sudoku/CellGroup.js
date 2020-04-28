@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 const CellGroup = styled.div({
-    display: "inline-block",
+    display: "block",
     border: "solid 1px black"
 })
 
