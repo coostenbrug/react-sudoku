@@ -44,13 +44,11 @@ const Sudoku = ({data}) => {
     const [selected, setSelected] = React.useState(falseArray)
     const [selectMode, setSelectMode] = React.useState(true)
 
-
     const handleCellMouseDown = (e,x,y) => {
-        if (e.buttons === 1)
-        {
+        if (e.buttons === 1) {
+            e.preventDefault()
             if (e.ctrlKey) {
                 setSelectMode(!selected[x][y])
-                console.log(selectMode)
                 let newSelected = [...selected]
                 newSelected[x][y] = !selected[x][y]
                 setSelected(newSelected)
@@ -64,9 +62,7 @@ const Sudoku = ({data}) => {
     }
 
     const handleCellMouseEnter = (e,x,y) => {
-        if (e.buttons === 1)
-        {
-            console.log(selectMode)
+        if (e.buttons === 1) {
             let newSelected = [...selected]
             newSelected[x][y] = selectMode
             setSelected(newSelected)
