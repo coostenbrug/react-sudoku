@@ -3,7 +3,9 @@ import CellGroup from "./CellGroup"
 import Cell from "./Cell"
 import styled from "styled-components"
 
-const SudokuBoardWrap = styled.div({})
+const SudokuBoardWrap = styled.div({
+    margin: "auto"
+})
 
 const SudokuBoard = ({boardData, cellData}) => {
     const { 

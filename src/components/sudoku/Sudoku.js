@@ -54,7 +54,7 @@ const Sudoku = ({data}) => {
     }
 
     const handleKeyDown = e => {
-        if(e.key in [1,2,3,4,5,6,7,8,9]) {
+        if(["1","2","3","4","5","6","7","8","9"].includes(e.key)) {
             setSelectedCellValues(e.key)
         } else if (e.key === "Delete" || e.key === "Backspace") {
             setSelectedCellValues("")
@@ -62,7 +62,7 @@ const Sudoku = ({data}) => {
     }
 
     const handleControlPanelClick = (e, code) => {
-        if(code in [1,2,3,4,5,6,7,8,9]) {
+        if(["1","2","3","4","5","6","7","8","9"].includes(code)) {
             setSelectedCellValues(code)
         } else if (code === "Erase") {
             setSelectedCellValues("")
@@ -85,7 +85,7 @@ const Sudoku = ({data}) => {
     }
 
     return(
-    <div>
+    <div style={{display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
         <SudokuBoard boardData={boardData} cellData={cellData}/>
         <ControlPanel handleOnClick={handleControlPanelClick}/>
     </div>
