@@ -31,9 +31,7 @@ const SudokuBoard = ({boardData, cellData, cellFunctions}) => {
                   key={`Cell ${x},${y}`}
                   xLoc={x}
                   yLoc={y}
-                  value={cell.value}
-                  selected={cell.selected}
-                  locked={cell.locked}
+                  {...cell}
                   handleMouseDown={handleMouseDown}
                   handleMouseEnter={handleMouseEnter}
                 />

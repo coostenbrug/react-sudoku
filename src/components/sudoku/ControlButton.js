@@ -1,12 +1,11 @@
 import styled from "styled-components"
 
-const ControlButton = styled.button(({height, width})=>({
-    background: "none",
+const ControlButton = styled.button(({height, width, pressed})=>({
+    background: pressed ? "#cccccc" : "#e3e3e3",
     borderRadius: 8,
     height: height,
     width: width,
     fontSize: "22px",
-    background: "#e3e3e3",
     ":active": {
         background: "#cccccc"
     },
