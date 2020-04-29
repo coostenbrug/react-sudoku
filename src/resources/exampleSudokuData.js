@@ -1,474 +1,138 @@
 export default {
     cellData: [
         [
+            {},
             {
-                "selected": false,
-                "value": "",
-                "locked": false
+                "value": 4,
+                "locked": true
             },
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}           
+        ],
+        [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}   
+        ],
+        [
+            {},
+            {},
+            {},
+            {},
+            {},
             {
-                "selected": false,
-                "value": "",
-                "locked": false
+                "value": 3,
+                "locked": true
             },
+            {},
+            {},
+            {}  
+        ],
+        [
+            {},
+            {},
+            {},
+            {},
+            {},
             {
-                "selected": false,
-                "value": "",
-                "locked": false
+                "value": 9,
+                "locked": true
             },
+            {},
+            {},
+            {}  
+        ],
+        [
+            {},
+            {},
             {
-                "selected": false,
-                "value": "",
-                "locked": false
+                "value": 6,
+                "locked": true
             },
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}  
+        ],
+        [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
             {
-                "selected": false,
-                "value": "",
-                "locked": false
+                "value": 6,
+                "locked": true
             },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            }
+            {}  
+        ],
+        [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}  
+        ],
+        [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}  
         ],
         [
             {
-                "selected": false,
-                "value": "",
-                "locked": false
+                "value": 2,
+                "locked": true
             },
+            {},
+            {},
+            {},
             {
-                "selected": false,
-                "value": "",
-                "locked": false
+                "value": 5,
+                "locked": true
             },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            }
+            {},
+            {},
+            {},
+            {}  
         ],
         [
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            }
-        ],
-        [
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            }
-        ],
-        [
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            }
-        ],
-        [
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            }
-        ],
-        [
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            }
-        ],
-        [
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            }
-        ],
-        [
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            }
-        ],
-        [
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            },
-            {
-                "selected": false,
-                "value": "",
-                "locked": false
-            }
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {
+                "value": 3,
+                "locked": true
+            },
+            {}  
         ]
     ],
     "boardData": {

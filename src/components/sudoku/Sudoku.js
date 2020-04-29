@@ -8,7 +8,7 @@ const Sudoku = ({data}) => {
 
     const [cellData, setCellData] = React.useState(data.cellData)
     const [values, setValues] = React.useState(data.values)
-    const [selectMode, setSelectMode] = React.useState(true)
+    const [isSelecting, setIsSelecting] = React.useState(true)
 
     React.useEffect(() => {
         document.addEventListener("keydown", handleKeyDown);
@@ -20,12 +20,12 @@ const Sudoku = ({data}) => {
         if (e.buttons === 1) {
             e.preventDefault()
             if (e.ctrlKey) {
-                setSelectMode(!cellData[x][y].selected)
+                setIsSelecting(!cellData[x][y].selected)
                 let newCellData = [...cellData]
                 cellData[x][y].selected = !cellData[x][y].selected
                 setCellData(newCellData)
             } else {
-                setSelectMode(true)
+                setIsSelecting(true)
                 let newCellData = [...cellData]
                 newCellData.forEach((row)=>{
                     row.forEach((cell)=>{
@@ -41,7 +41,7 @@ const Sudoku = ({data}) => {
     const handleCellMouseEnter = (e,x,y) => {
         if (e.buttons === 1) {
             let newCellData = [...cellData]
-            newCellData[x][y].selected = selectMode
+            newCellData[x][y].selected = isSelecting
             setCellData(newCellData)
         }
     }

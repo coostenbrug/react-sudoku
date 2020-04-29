@@ -2,6 +2,8 @@ import React from "react"
 import styled from "styled-components"
 
 const CellDiv = styled.div({
+        display: "flex",
+        position: "relative",
         border: "solid 1px black"
     },
     ({size})=>({
@@ -14,11 +16,11 @@ const CellDiv = styled.div({
 )
 
 CellDiv.defaultProps = {
-    size: "40px"
+    size: "56px"
 }
 
 const CellText = styled.p({
-    fontSize: "30px",
+    fontSize: "40px",
     textAlign: "center",
     userSelect: "none",
     margin: "auto"
@@ -28,6 +30,34 @@ const CellText = styled.p({
     })
 )
 
+const NoteText = styled.p(({position})=>({
+    margin: 0,
+    position: "absolute",
+    top: [4,22,39][Math.floor(position/3)],
+    left: [4,23,42][position % 3],
+    width: 10,
+    height: 14,
+    fontSize: "14px",
+    lineHeight: 1,
+    textAlign: "center",
+    userSelect: "none"
+}))
+
+const renderNotes = notes => {
+    let noteElements = new Array(notes.length)
+    notes.forEach((note, i)=>{
+        noteElements.push(
+        <NoteText 
+          position={i}
+          key={note}
+          >
+            {note}
+        </NoteText>
+        )
+    })
+    return noteElements
+}
+
 const Cell = ({
         selected,
         value,
@@ -35,7 +65,8 @@ const Cell = ({
         handleMouseDown,
         handleMouseEnter,
         xLoc,
-        yLoc
+        yLoc,
+        notes
     }, props) => {
     return (
         <CellDiv
@@ -43,11 +74,26 @@ const Cell = ({
             onMouseEnter={(e) => handleMouseEnter(e, xLoc, yLoc)}
             selected={selected}
             {...props}>
-            <CellText locked={locked}>
-                {value === 0 ? " " : value}
-            </CellText>
+            {value ? 
+                <CellText locked={locked}>
+                    {value}
+                </CellText> 
+                :
+                renderNotes(notes)
+            }
         </CellDiv>
     )
+}
+
+Cell.defaultProps = {
+    selected: false,
+    value: null,
+    locked: false,
+    handleMouseDown: () => {},
+    handleMouseEnter: () => {},
+    xLoc: -1,
+    yLoc: -1,
+    notes: []
 }
 
 export default Cell
