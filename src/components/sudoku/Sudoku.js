@@ -1,12 +1,13 @@
 import React from "react"
 import SudokuBoard from "./SudokuBoard"
 import ControlPanel from "./ControlPanel"
+import { CellArray } from "../../utils"
 
 const Sudoku = ({data}) => {
     
     const falseArray = Array(data.height).fill().map(() => Array(data.width).fill(false))
 
-    const [cellData, setCellData] = React.useState(data.cellData)
+    const [cellData, setCellData] = React.useState(new CellArray(data.cellData))
     const [values, setValues] = React.useState(data.values)
     const [isSelecting, setIsSelecting] = React.useState(true)
     const [controlMode, setControlMode] = React.useState(0)
@@ -22,16 +23,14 @@ const Sudoku = ({data}) => {
             e.preventDefault()
             if (e.ctrlKey) {
                 setIsSelecting(!cellData[x][y].selected)
-                let newCellData = [...cellData]
+                let newCellData = new CellArray(cellData)
                 cellData[x][y].selected = !cellData[x][y].selected
                 setCellData(newCellData)
             } else {
                 setIsSelecting(true)
-                let newCellData = [...cellData]
-                newCellData.forEach((row)=>{
-                    row.forEach((cell)=>{
-                        cell.selected = false
-                    })
+                let newCellData = new CellArray(cellData)
+                newCellData.forEachCell((cell)=>{
+                    cell.selected = false
                 })
                 newCellData[x][y].selected = true
                 setCellData(newCellData)
@@ -41,7 +40,7 @@ const Sudoku = ({data}) => {
 
     const handleCellMouseEnter = (e,x,y) => {
         if (e.buttons === 1) {
-            let newCellData = [...cellData]
+            let newCellData = new CellArray(cellData)
             newCellData[x][y].selected = isSelecting
             setCellData(newCellData)
         }
@@ -49,12 +48,11 @@ const Sudoku = ({data}) => {
 
     const shouldEraseBasedOnSelectedCells = (cellCondition, excludeCells) => {
         let shouldErase = true
-        cellData.forEach((row)=>{
-            row.forEach((cell)=>{
+
+        cellData.forEachCell((cell)=>{
                 if(cell.selected && excludeCells(cell)) {
                     if (cellCondition(cell)) {shouldErase = false}
                 }
-            })
         })
         return shouldErase
     }
@@ -62,18 +60,16 @@ const Sudoku = ({data}) => {
     const setSelectedCellValues = value => {
         let eraseValue = shouldEraseBasedOnSelectedCells(cell=>(cell.value !== value),cell=>(!cell.locked))
 
-        let newCellData = [...cellData]
-        newCellData.forEach((row)=>{
-            row.forEach((cell)=>{
-                if(cell.selected && !cell.locked) {
-                    if (eraseValue) {
-                        cell.value = null
-                    } else {
-                        cell.value = value
-                        cell.notes = []
-                    }
+        let newCellData = new CellArray(cellData)
+        newCellData.forEachCell((cell)=>{
+            if(cell.selected && !cell.locked) {
+                if (eraseValue) {
+                    cell.value = null
+                } else {
+                    cell.value = value
+                    cell.notes = []
                 }
-            })
+            }
         })
         setValues(newCellData)
     }
@@ -81,18 +77,16 @@ const Sudoku = ({data}) => {
     const toggleSelectedCellNotes = note => {
         let eraseNote = shouldEraseBasedOnSelectedCells((cell)=>(!cell.notes || !cell.notes[note]),cell=>(!cell.locked && !cell.value))
 
-        let newCellData = [...cellData]
-        newCellData.forEach((row)=>{
-            row.forEach((cell)=>{
-                if(cell.selected && !cell.locked && !cell.value) {
-                    if (!cell.notes) {cell.notes = new Array(9)}
-                    if (eraseNote) {
-                        cell.notes[note] = false
-                    } else {
-                        cell.notes[note] = true
-                    }
+        let newCellData = new CellArray(cellData)
+        newCellData.forEachCell((cell)=>{
+            if(cell.selected && !cell.locked && !cell.value) {
+                if (!cell.notes) {cell.notes = new Array(9)}
+                if (eraseNote) {
+                    cell.notes[note] = false
+                } else {
+                    cell.notes[note] = true
                 }
-            })
+            }
         })
         setValues(newCellData)
     }
@@ -110,14 +104,12 @@ const Sudoku = ({data}) => {
     }
 
     const clearCellContents = () => {
-        let newCellData = [...cellData]
-        newCellData.forEach((row)=>{
-            row.forEach((cell)=>{
-                if(cell.selected && !cell.locked) {
-                    cell.value = null
-                    cell.notes = []
-                }
-            })
+        let newCellData = new CellArray(cellData)
+        newCellData.forEachCell((cell)=>{
+            if(cell.selected && !cell.locked) {
+                cell.value = null
+                cell.notes = []
+            }
         })
         setValues(newCellData)
     }
