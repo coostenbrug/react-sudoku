@@ -42,28 +42,20 @@ const Sudoku = ({data}) => {
         }
     }
 
-    const setSelectedCellValues = value => {
+    const modifyCellContents = input => {
         let newCellData = new CellArray(cellData)
-        newCellData.setSelectedCellsValue(value)
-        setCellData(newCellData)
-    }
 
-    const toggleSelectedCellNotes = note => {
-        let newCellData = new CellArray(cellData)
-        newCellData.toggleSelectedCellsNote(note)
-        setCellData(newCellData)
-    }
-
-    const modifyCellContents = value => {
         switch (controlMode) {
             default:
             case 0:
-                setSelectedCellValues(value)
+                newCellData.setSelectedCellsValue(input)
                 break;
             case 1:
-                toggleSelectedCellNotes(value)
+                newCellData.toggleSelectedCellsNote(input)
                 break;
         }
+
+        setCellData(newCellData)
     }
 
     const clearCellContents = () => {
