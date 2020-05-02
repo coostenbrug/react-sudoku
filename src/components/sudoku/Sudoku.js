@@ -98,22 +98,57 @@ const Sudoku = ({data}) => {
     }
 
     const handleKeyDown = e => {
-        if(["1","2","3","4","5","6","7","8","9"].includes(e.key)) {
-            modifyCellContents(e.key)
-        } else if (e.key === "Delete" || e.key === "Backspace") {
-            clearCellContents()
+        switch (e.key) {
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+                modifyCellContents(e.key)
+                break;
+
+            case "Delete":
+            case "Backspace":
+                clearCellContents()
+                break;
+                
+            default:
+                break;
         }
     }
 
     const handleControlPanelClick = (e, code) => {
-        if(["1","2","3","4","5","6","7","8","9"].includes(code)) {
-            modifyCellContents(code)
-        } else if (code === "erase") {
-            clearCellContents()
-        } else if (code === "ans") {
-            setControlMode(0)
-        } else if (code === "note") {
-            setControlMode(1)
+        switch (code) {
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+                modifyCellContents(code)
+                break;
+
+            case "erase":
+                clearCellContents()
+                break;
+
+            case "ans":
+                setControlMode(0)
+                break;
+
+            case "note":
+                setControlMode(1)
+                break;
+
+            default:
+                break;
         }
     }
 
