@@ -48,11 +48,24 @@ const Sudoku = ({data}) => {
     }
 
     const setSelectedCellValues = value => {
+        let eraseValue = true
+        cellData.forEach((row)=>{
+            row.forEach((cell)=>{
+                if(cell.selected && !cell.locked) {
+                    if (cell.value !== value) {eraseValue = false}
+                }
+            })
+        })
+
         let newCellData = [...cellData]
         newCellData.forEach((row)=>{
             row.forEach((cell)=>{
                 if(cell.selected && !cell.locked) {
-                    cell.value = value
+                    if (eraseValue) {
+                        cell.value = null
+                    } else {
+                        cell.value = value
+                    }
                 }
             })
         })
