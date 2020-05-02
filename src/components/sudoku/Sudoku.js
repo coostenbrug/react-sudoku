@@ -47,8 +47,20 @@ const Sudoku = ({data}) => {
         }
     }
 
+    const shouldEraseBasedOnSelectedCells = (cellCondition, excludeCells) => {
+        let shouldErase = true
+        cellData.forEach((row)=>{
+            row.forEach((cell)=>{
+                if(cell.selected && excludeCells(cell)) {
+                    if (cellCondition(cell)) {shouldErase = false}
+                }
+            })
+        })
+        return shouldErase
+    }
+
     const setSelectedCellValues = value => {
-        let eraseValue = shouldEraseBasedOnSelectedCells((cell)=>(cell.value !== value))
+        let eraseValue = shouldEraseBasedOnSelectedCells(cell=>(cell.value !== value),cell=>(!cell.locked))
 
         let newCellData = [...cellData]
         newCellData.forEach((row)=>{
@@ -58,6 +70,7 @@ const Sudoku = ({data}) => {
                         cell.value = null
                     } else {
                         cell.value = value
+                        cell.notes = []
                     }
                 }
             })
@@ -65,25 +78,13 @@ const Sudoku = ({data}) => {
         setValues(newCellData)
     }
 
-    const shouldEraseBasedOnSelectedCells = (cellCondition) => {
-        let shouldErase = true
-        cellData.forEach((row)=>{
-            row.forEach((cell)=>{
-                if(cell.selected && !cell.locked) {
-                    if (cellCondition(cell)) {shouldErase = false}
-                }
-            })
-        })
-        return shouldErase
-    }
-
     const toggleSelectedCellNotes = note => {
-        let eraseNote = shouldEraseBasedOnSelectedCells((cell)=>(!cell.notes || !cell.notes[note]))
+        let eraseNote = shouldEraseBasedOnSelectedCells((cell)=>(!cell.notes || !cell.notes[note]),cell=>(!cell.locked && !cell.value))
 
         let newCellData = [...cellData]
         newCellData.forEach((row)=>{
             row.forEach((cell)=>{
-                if(cell.selected && !cell.locked) {
+                if(cell.selected && !cell.locked && !cell.value) {
                     if (!cell.notes) {cell.notes = new Array(9)}
                     if (eraseNote) {
                         cell.notes[note] = false
