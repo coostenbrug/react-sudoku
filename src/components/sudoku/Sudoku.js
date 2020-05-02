@@ -5,10 +5,7 @@ import { CellArray } from "../../utils"
 
 const Sudoku = ({data}) => {
     
-    const falseArray = Array(data.height).fill().map(() => Array(data.width).fill(false))
-
     const [cellData, setCellData] = React.useState(new CellArray(data.cellData))
-    const [values, setValues] = React.useState(data.values)
     const [isSelecting, setIsSelecting] = React.useState(true)
     const [controlMode, setControlMode] = React.useState(0)
 
@@ -17,7 +14,6 @@ const Sudoku = ({data}) => {
         return () => document.removeEventListener("keydown", handleKeyDown);
     })
       
-
     const handleCellMouseDown = (e,x,y) => {
         if (e.buttons === 1) {
             e.preventDefault()
@@ -47,43 +43,15 @@ const Sudoku = ({data}) => {
     }
 
     const setSelectedCellValues = value => {
-        let shouldEraseValue = cellData.queriedCellsAllHaveProperty(
-          cell=>(cell.value !== value),
-          cell=>(cell.selected && !cell.locked),
-        )
-
         let newCellData = new CellArray(cellData)
-        newCellData.forEachCell((cell)=>{
-            if(cell.selected && !cell.locked) {
-                if (shouldEraseValue) {
-                    cell.value = null
-                } else {
-                    cell.value = value
-                    cell.notes = []
-                }
-            }
-        })
-        setValues(newCellData)
+        newCellData.setSelectedCellsValue(value)
+        setCellData(newCellData)
     }
 
     const toggleSelectedCellNotes = note => {
-        let shouldEraseNote = cellData.queriedCellsAllHaveProperty(
-          cell=>(!cell.notes || !cell.notes[note]),
-          cell=>(cell.selected && !cell.locked && !cell.value)
-        )
-
         let newCellData = new CellArray(cellData)
-        newCellData.forEachCell((cell)=>{
-            if(cell.selected && !cell.locked && !cell.value) {
-                if (!cell.notes) {cell.notes = new Array(9)}
-                if (shouldEraseNote) {
-                    cell.notes[note] = false
-                } else {
-                    cell.notes[note] = true
-                }
-            }
-        })
-        setValues(newCellData)
+        newCellData.toggleSelectedCellsNote(note)
+        setCellData(newCellData)
     }
 
     const modifyCellContents = value => {
@@ -106,7 +74,7 @@ const Sudoku = ({data}) => {
                 cell.notes = []
             }
         })
-        setValues(newCellData)
+        setCellData(newCellData)
     }
 
     const handleKeyDown = e => {
