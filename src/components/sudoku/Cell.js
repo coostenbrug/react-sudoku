@@ -48,7 +48,6 @@ const renderNotes = notes => {
     let position = 0
     notes.forEach((note, i)=>{
         if(note === true) {
-            console.log("pushin")
             noteElements.push(
             <NoteText 
             position={position}

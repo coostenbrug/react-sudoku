@@ -48,14 +48,7 @@ const Sudoku = ({data}) => {
     }
 
     const setSelectedCellValues = value => {
-        let eraseValue = true
-        cellData.forEach((row)=>{
-            row.forEach((cell)=>{
-                if(cell.selected && !cell.locked) {
-                    if (cell.value !== value) {eraseValue = false}
-                }
-            })
-        })
+        let eraseValue = shouldEraseBasedOnSelectedCells((cell)=>(cell.value !== value))
 
         let newCellData = [...cellData]
         newCellData.forEach((row)=>{
@@ -72,16 +65,20 @@ const Sudoku = ({data}) => {
         setValues(newCellData)
     }
 
-    const toggleSelectedCellNotes = note => {
-        let eraseNote = true
+    const shouldEraseBasedOnSelectedCells = (cellCondition) => {
+        let shouldErase = true
         cellData.forEach((row)=>{
             row.forEach((cell)=>{
                 if(cell.selected && !cell.locked) {
-                    if (!cell.notes) {cell.notes = new Array(9)}
-                    if (!cell.notes[note]) {eraseNote = false}
+                    if (cellCondition(cell)) {shouldErase = false}
                 }
             })
         })
+        return shouldErase
+    }
+
+    const toggleSelectedCellNotes = note => {
+        let eraseNote = shouldEraseBasedOnSelectedCells((cell)=>(!cell.notes || !cell.notes[note]))
 
         let newCellData = [...cellData]
         newCellData.forEach((row)=>{
