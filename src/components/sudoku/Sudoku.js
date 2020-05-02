@@ -46,24 +46,16 @@ const Sudoku = ({data}) => {
         }
     }
 
-    const shouldEraseBasedOnSelectedCells = (cellCondition, excludeCells) => {
-        let shouldErase = true
-
-        cellData.forEachCell((cell)=>{
-                if(cell.selected && excludeCells(cell)) {
-                    if (cellCondition(cell)) {shouldErase = false}
-                }
-        })
-        return shouldErase
-    }
-
     const setSelectedCellValues = value => {
-        let eraseValue = shouldEraseBasedOnSelectedCells(cell=>(cell.value !== value),cell=>(!cell.locked))
+        let shouldEraseValue = cellData.queriedCellsAllHaveProperty(
+          cell=>(cell.value !== value),
+          cell=>(cell.selected && !cell.locked),
+        )
 
         let newCellData = new CellArray(cellData)
         newCellData.forEachCell((cell)=>{
             if(cell.selected && !cell.locked) {
-                if (eraseValue) {
+                if (shouldEraseValue) {
                     cell.value = null
                 } else {
                     cell.value = value
@@ -75,13 +67,16 @@ const Sudoku = ({data}) => {
     }
 
     const toggleSelectedCellNotes = note => {
-        let eraseNote = shouldEraseBasedOnSelectedCells((cell)=>(!cell.notes || !cell.notes[note]),cell=>(!cell.locked && !cell.value))
+        let shouldEraseNote = cellData.queriedCellsAllHaveProperty(
+          cell=>(!cell.notes || !cell.notes[note]),
+          cell=>(cell.selected && !cell.locked && !cell.value)
+        )
 
         let newCellData = new CellArray(cellData)
         newCellData.forEachCell((cell)=>{
             if(cell.selected && !cell.locked && !cell.value) {
                 if (!cell.notes) {cell.notes = new Array(9)}
-                if (eraseNote) {
+                if (shouldEraseNote) {
                     cell.notes[note] = false
                 } else {
                     cell.notes[note] = true
