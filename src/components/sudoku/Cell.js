@@ -44,16 +44,21 @@ const NoteText = styled.p(({position})=>({
 }))
 
 const renderNotes = notes => {
-    let noteElements = new Array(notes.length)
+    let noteElements = new Array()
+    let position = 0
     notes.forEach((note, i)=>{
-        noteElements.push(
-        <NoteText 
-          position={i}
-          key={note}
-          >
-            {note}
-        </NoteText>
-        )
+        if(note === true) {
+            console.log("pushin")
+            noteElements.push(
+            <NoteText 
+            position={position}
+            key={i}
+            >
+                {i}
+            </NoteText>
+            )
+            position++
+        }
     })
     return noteElements
 }

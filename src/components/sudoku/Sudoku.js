@@ -60,12 +60,26 @@ const Sudoku = ({data}) => {
     }
 
     const toggleSelectedCellNotes = note => {
+        let eraseNote = true
+        cellData.forEach((row)=>{
+            row.forEach((cell)=>{
+                if(cell.selected && !cell.locked) {
+                    if (!cell.notes) {cell.notes = new Array(9)}
+                    if (!cell.notes[note]) {eraseNote = false}
+                }
+            })
+        })
+
         let newCellData = [...cellData]
         newCellData.forEach((row)=>{
             row.forEach((cell)=>{
                 if(cell.selected && !cell.locked) {
-                    if (!cell.notes) {cell.notes = []}
-                    cell.notes.push(note)
+                    if (!cell.notes) {cell.notes = new Array(9)}
+                    if (eraseNote) {
+                        cell.notes[note] = false
+                    } else {
+                        cell.notes[note] = true
+                    }
                 }
             })
         })
