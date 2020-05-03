@@ -196,10 +196,18 @@ const Sudoku = ({data}) => {
         handleMouseEnter: handleCellMouseEnter
     }
 
+    const controlPanelFunctions = {
+        modifyCellContents,
+        clearCellContents,
+        setControlMode,
+        undo,
+        redo
+    }
+
     return(
     <div style={{display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
         <SudokuBoard boardData={data.boardData} cellData={data.cellData} cellFunctions={cellFunctions}/>
-        <ControlPanel controlMode={controlMode} handleOnClick={handleControlPanelClick}/>
+        <ControlPanel controlMode={controlMode} functions={controlPanelFunctions}/>
     </div>
 )}
 

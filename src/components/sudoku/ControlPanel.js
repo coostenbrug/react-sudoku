@@ -27,28 +27,37 @@ const ControlPanelWrapper = styled.div({
     }
 })
 
-const ControlPanel = ({handleOnClick, controlMode}) => (
-    <ControlPanelWrapper>
-        <ControlPanelRow>
-            <ControlButton onClick={(e)=>handleOnClick(e,"1")}>1</ControlButton>
-            <ControlButton onClick={(e)=>handleOnClick(e,"2")}>2</ControlButton>
-            <ControlButton onClick={(e)=>handleOnClick(e,"3")}>3</ControlButton>
-            <ControlButton onClick={(e)=>handleOnClick(e,"4")}>4</ControlButton>
-            <ControlButton onClick={(e)=>handleOnClick(e,"5")}>5</ControlButton>
-            <ControlButton onClick={(e)=>handleOnClick(e,"6")}>6</ControlButton>
-            <ControlButton onClick={(e)=>handleOnClick(e,"7")}>7</ControlButton>
-            <ControlButton onClick={(e)=>handleOnClick(e,"8")}>8</ControlButton>
-            <ControlButton onClick={(e)=>handleOnClick(e,"9")}>9</ControlButton>
-            <ControlButton onClick={(e)=>handleOnClick(e,"erase")}>X</ControlButton>
-        </ControlPanelRow>
-        <ControlPanelRow>
-            <ControlButton pressed={controlMode === 0} width={84} onClick={(e)=>handleOnClick(e,"ans")}>Ans</ControlButton>
-            <ControlButton pressed={controlMode === 1} width={84} onClick={(e)=>handleOnClick(e,"note")}>Note</ControlButton>
-            <ControlButton width={84} onClick={(e)=>handleOnClick(e,"undo")}>Undo</ControlButton>
-            <ControlButton width={84} onClick={(e)=>handleOnClick(e,"redo")}>Redo</ControlButton>
-        </ControlPanelRow>
-    </ControlPanelWrapper>
-)
+const ControlPanel = ({functions, controlMode}) => {
+    const {
+        modifyCellContents,
+        clearCellContents,
+        setControlMode,
+        undo,
+        redo
+    } = functions
+    return(
+        <ControlPanelWrapper>
+            <ControlPanelRow>
+                <ControlButton onClick={function() {modifyCellContents(1)}}>1</ControlButton>
+                <ControlButton onClick={function() {modifyCellContents(2)}}>2</ControlButton>
+                <ControlButton onClick={function() {modifyCellContents(3)}}>3</ControlButton>
+                <ControlButton onClick={function() {modifyCellContents(4)}}>4</ControlButton>
+                <ControlButton onClick={function() {modifyCellContents(5)}}>5</ControlButton>
+                <ControlButton onClick={function() {modifyCellContents(6)}}>6</ControlButton>
+                <ControlButton onClick={function() {modifyCellContents(7)}}>7</ControlButton>
+                <ControlButton onClick={function() {modifyCellContents(8)}}>8</ControlButton>
+                <ControlButton onClick={function() {modifyCellContents(9)}}>9</ControlButton>
+                <ControlButton onClick={function() {clearCellContents()}}>X</ControlButton>
+            </ControlPanelRow>
+            <ControlPanelRow>
+                <ControlButton pressed={controlMode === 0} width={84} onClick={function() {setControlMode(0)}}>Ans</ControlButton>
+                <ControlButton pressed={controlMode === 1} width={84} onClick={function() {setControlMode(1)}}>Note</ControlButton>
+                <ControlButton width={84} onClick={function() {undo()}}>Undo</ControlButton>
+                <ControlButton width={84} onClick={function() {redo()}}>Redo</ControlButton>
+            </ControlPanelRow>
+        </ControlPanelWrapper>
+    )
+}
 
 ControlPanel.defaultProps = {
     handleOnClick: () => {}
