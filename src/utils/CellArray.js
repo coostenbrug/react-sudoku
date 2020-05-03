@@ -7,9 +7,9 @@ class CellArray extends Array {
     }
 
     forEachCell(fnc) {
-        this.forEach(row => {
-            row.forEach(cell => {
-                fnc(cell)
+        this.forEach((row,i) => {
+            row.forEach((cell,j) => {
+                fnc(cell,i,j)
             })
         })
     }

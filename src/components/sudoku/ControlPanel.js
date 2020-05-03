@@ -44,6 +44,8 @@ const ControlPanel = ({handleOnClick, controlMode}) => (
         <ControlPanelRow>
             <ControlButton pressed={controlMode === 0} width={84} onClick={(e)=>handleOnClick(e,"ans")}>Ans</ControlButton>
             <ControlButton pressed={controlMode === 1} width={84} onClick={(e)=>handleOnClick(e,"note")}>Note</ControlButton>
+            <ControlButton width={84} onClick={(e)=>handleOnClick(e,"undo")}>Undo</ControlButton>
+            <ControlButton width={84} onClick={(e)=>handleOnClick(e,"redo")}>Redo</ControlButton>
         </ControlPanelRow>
     </ControlPanelWrapper>
 )
