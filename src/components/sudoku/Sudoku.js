@@ -2,10 +2,11 @@ import React from "react"
 import SudokuBoard from "./SudokuBoard"
 import ControlPanel from "./ControlPanel"
 import { CellArray, Stack } from "../../utils"
+import cellDataReducer from "./cellDataReducer"
 
 const Sudoku = ({data}) => {
     
-    const [cellData, setCellData] = React.useState(new CellArray(data.cellData))
+    const [cellData, dispatchCellData] = React.useReducer(cellDataReducer,new CellArray(data.cellData))
     const [isSelecting, setIsSelecting] = React.useState(true)
     const [controlMode, setControlMode] = React.useState(0)
     const undoMemory = React.useRef(new Stack())
@@ -21,26 +22,17 @@ const Sudoku = ({data}) => {
             e.preventDefault()
             if (e.ctrlKey) {
                 setIsSelecting(!cellData[x][y].selected)
-                let newCellData = new CellArray(cellData)
-                cellData[x][y].selected = !cellData[x][y].selected
-                setCellData(newCellData)
+                dispatchCellData({type: "toggleCellSelection", cell: {x: x, y: y}})
             } else {
                 setIsSelecting(true)
-                let newCellData = new CellArray(cellData)
-                newCellData.forEachCell((cell)=>{
-                    cell.selected = false
-                })
-                newCellData[x][y].selected = true
-                setCellData(newCellData)
+                dispatchCellData({type: "resetCellSelection",  cell: {x: x, y: y}})
             }
         }
     }
 
     const handleCellMouseEnter = (e,x,y) => {
         if (e.buttons === 1) {
-            let newCellData = new CellArray(cellData)
-            newCellData[x][y].selected = isSelecting
-            setCellData(newCellData)
+            dispatchCellData({type: "setCellSelection", cell: {x: x, y: y}, input: isSelecting})
         }
     }
 
@@ -63,46 +55,29 @@ const Sudoku = ({data}) => {
 
     const modifyCellContents = input => {
         updateMemoryStacks()
-        let newCellData = new CellArray(cellData)
 
         switch (controlMode) {
             default:
             case 0:
-                newCellData.setSelectedCellsValue(input)
+                dispatchCellData({type: "toggleSelectedValue", input: input})
                 break;
             case 1:
-                newCellData.toggleSelectedCellsNote(input)
+                dispatchCellData({type: "toggleSelectedNote", input: input})
                 break;
         }
-        setCellData(newCellData)        
     }
 
     const clearCellContents = () => {
         updateMemoryStacks()
-        let newCellData = new CellArray(cellData)
-
-        newCellData.forEachCell((cell)=>{
-            if(cell.selected && !cell.locked) {
-                cell.value = null
-                cell.notes = []
-            }
-        })
-        setCellData(newCellData)
+        dispatchCellData({type: "clearSelectedCells"})
     }
 
     const applyMemoryToCellData = memory => {
-        let newCellData = new CellArray(cellData)
-        newCellData.forEachCell((cell,i,j) => {
-            cell.value = memory[i][j].value
-            cell.notes = memory[i][j].notes
-        })
-        setCellData(newCellData)
+        dispatchCellData({type: "applyMemory", input: memory})
     }
 
     const undo = () => {
         //TODO: do not apply selected prop from memory
-        console.log("undo")
-
         const memory = undoMemory.current.pop()
         
         if (memory) {
@@ -112,8 +87,6 @@ const Sudoku = ({data}) => {
     }
 
     const redo = () => {
-        console.log("redo")
-
         const memory = redoMemory.current.pop()
         
         if (memory) {
@@ -206,7 +179,7 @@ const Sudoku = ({data}) => {
 
     return(
     <div style={{display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
-        <SudokuBoard boardData={data.boardData} cellData={data.cellData} cellFunctions={cellFunctions}/>
+        <SudokuBoard boardData={data.boardData} cellData={cellData} cellFunctions={cellFunctions}/>
         <ControlPanel controlMode={controlMode} functions={controlPanelFunctions}/>
     </div>
 )}
