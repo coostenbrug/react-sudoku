@@ -6,7 +6,7 @@ function cellDataReducer(state, action) {
 
     switch (action.type) {
         //Toggle value of selected cells (first saves undo memory and clears redo memory)
-        case "TOGGLE_SEL_CELLS_VALUE":
+        case "TOGGLE_SEL_CELLS_VALUE": {
             saveMemory(newState, "undo", state.data)
             newState.memory.redo.clear()
 
@@ -15,7 +15,7 @@ function cellDataReducer(state, action) {
                 cell=>(cell.selected && !cell.locked),
             )
             
-              newState.data.forEachCell((cell,i,j)=>{
+              newState.data.forEachCell((cell)=>{
                 if(cell.selected && !cell.locked) {
                     if (shouldEraseValue) {
                         cell.value = null
@@ -26,9 +26,10 @@ function cellDataReducer(state, action) {
                 }
             })
             return newState
+        }
 
         //Toggle notes of selected cells (first saves undo memory and clears redo memory)
-        case "TOGGLE_SEL_CELLS_NOTE":
+        case "TOGGLE_SEL_CELLS_NOTE": {
             saveMemory(newState, "undo", state.data)
             newState.memory.redo.clear()
 
@@ -48,9 +49,10 @@ function cellDataReducer(state, action) {
                 }
             })
             return newState
+        }
 
         //Clear value and notes of selected cells (first saves undo memory and clears redo memory)
-        case "CLEAR_SEL_CELLS":
+        case "CLEAR_SEL_CELLS": {
             saveMemory(newState, "undo", state.data)
             newState.memory.redo.clear()
 
@@ -61,27 +63,31 @@ function cellDataReducer(state, action) {
                 }
             })
             return newState
+        }
 
         //Set a cell to selected/not selected
-        case "SET_SEL":
+        case "SET_SEL": {
             newState.data[action.cell.x][action.cell.y].selected = action.input
             return newState
-        
+        }
+
         //Set a cell to the opposite selected state
-        case "TOGGLE_SEL":
+        case "TOGGLE_SEL": {
             newState.data[action.cell.x][action.cell.y].selected = !state.data[action.cell.x][action.cell.y].selected
             return newState
+        }
 
         //Set all cells to not selected and the passed cell to selected
-        case "RESET_SEL":
+        case "RESET_SEL": {
             newState.data.forEachCell((cell)=>{
                 cell.selected = false
             })
             newState.data[action.cell.x][action.cell.y].selected = true
             return newState
+        }
 
         //Apply the top of the undo stack to board data, and save it to redo stack
-        case "MEM_UNDO":        
+        case "MEM_UNDO": {
             let undoMemory = newState.memory.undo.pop()
             if (undoMemory) {
                 saveMemory(newState, "redo", state.data)
@@ -89,18 +95,21 @@ function cellDataReducer(state, action) {
             }
             
             return newState
-        
+        }
+
         //Apply the top of the redo stack to board data, and save it to undo stack
-        case "MEM_REDO":        
+        case "MEM_REDO": {   
             let redoMemory = newState.memory.redo.pop()
             if (redoMemory) {
                 saveMemory(newState, "undo", state.data)
                 applyMemory(newState, redoMemory)
             }
             return newState
+        }
 
-        default:
+        default: {
             throw new Error()
+        }
     }
 }
 
