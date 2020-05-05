@@ -27,7 +27,7 @@ const ControlPanelWrapper = styled.div({
     }
 })
 
-const ControlPanel = ({functions, controlMode}) => {
+const ControlPanel = ({functions, stateProps}) => {
     const {
         modifyCellContents,
         clearCellContents,
@@ -35,6 +35,13 @@ const ControlPanel = ({functions, controlMode}) => {
         undo,
         redo
     } = functions
+    
+    const {
+        controlMode,
+        undoDisabled,
+        redoDisabled
+    } = stateProps
+
     return(
         <ControlPanelWrapper>
             <ControlPanelRow>
@@ -52,8 +59,8 @@ const ControlPanel = ({functions, controlMode}) => {
             <ControlPanelRow>
                 <ControlButton pressed={controlMode === 0} width={84} onClick={function() {setControlMode(0)}}>Ans</ControlButton>
                 <ControlButton pressed={controlMode === 1} width={84} onClick={function() {setControlMode(1)}}>Note</ControlButton>
-                <ControlButton width={84} onClick={function() {undo()}}>Undo</ControlButton>
-                <ControlButton width={84} onClick={function() {redo()}}>Redo</ControlButton>
+                <ControlButton disabled={undoDisabled} width={84} onClick={function() {undo()}}>Undo</ControlButton>
+                <ControlButton disabled={redoDisabled} width={84} onClick={function() {redo()}}>Redo</ControlButton>
             </ControlPanelRow>
         </ControlPanelWrapper>
     )

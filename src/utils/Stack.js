@@ -28,7 +28,7 @@ Stack.prototype.peek = function() {
         return undefined;
     }
 
-    return this.storage[this.count];
+    return this.storage[this.count-1];
 }
 
 Stack.prototype.clear = function() {

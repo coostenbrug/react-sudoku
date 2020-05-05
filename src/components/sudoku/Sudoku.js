@@ -83,10 +83,16 @@ const Sudoku = ({data}) => {
         redo: function() {dispatchCellData({type: "MEM_REDO"})}
     }
 
+    const controlPanelState = {
+        controlMode,
+        undoDisabled: !cellData.memory.undo.peek(),
+        redoDisabled: !cellData.memory.redo.peek()
+    }
+
     return(
     <div style={{display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
         <SudokuBoard boardData={data.boardData} cellData={cellData.data} cellFunctions={cellFunctions}/>
-        <ControlPanel controlMode={controlMode} functions={controlPanelFunctions}/>
+        <ControlPanel stateProps={controlPanelState} functions={controlPanelFunctions}/>
     </div>
 )}
 
