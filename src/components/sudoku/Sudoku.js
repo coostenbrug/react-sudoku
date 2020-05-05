@@ -20,45 +20,45 @@ const Sudoku = ({data}) => {
             e.preventDefault()
             if (e.ctrlKey) {
                 setIsSelecting(!cellData.data[x][y].selected)
-                dispatchCellData({type: "toggleCellSelection", cell: {x: x, y: y}})
+                dispatchCellData({type: "TOGGLE_SEL", cell: {x: x, y: y}})
             } else {
                 setIsSelecting(true)
-                dispatchCellData({type: "resetCellSelection",  cell: {x: x, y: y}})
+                dispatchCellData({type: "RESET_SEL",  cell: {x: x, y: y}})
             }
         }
     }
 
     const handleCellMouseEnter = (e,x,y) => {
         if (e.buttons === 1) {
-            dispatchCellData({type: "setCellSelection", cell: {x: x, y: y}, input: isSelecting})
+            dispatchCellData({type: "SET_SEL", cell: {x: x, y: y}, input: isSelecting})
         }
     }
 
     const modifyCellContents = input => {
-        dispatchCellData({type: "SAVE_NEW"})
+        dispatchCellData({type: "MEM_SAVE_NEW"})
 
         switch (controlMode) {
             default:
             case 0:
-                dispatchCellData({type: "toggleSelectedValue", input: input})
+                dispatchCellData({type: "TOGGLE_SEL_CELLS_VALUE", input: input})
                 break;
             case 1:
-                dispatchCellData({type: "toggleSelectedNote", input: input})
+                dispatchCellData({type: "TOGGLE_SEL_CELLS_NOTE", input: input})
                 break;
         }
     }
 
     const clearCellContents = () => {
-        dispatchCellData({type: "SAVE_NEW"})
-        dispatchCellData({type: "clearSelectedCells"})
+        dispatchCellData({type: "MEM_SAVE_NEW"})
+        dispatchCellData({type: "CLEAR_SEL_CELLS"})
     }
 
     const undo = () => {
-        dispatchCellData({type: "UNDO"})
+        dispatchCellData({type: "MEM_UNDO"})
     }
 
     const redo = () => {
-        dispatchCellData({type: "REDO"})
+        dispatchCellData({type: "MEM_REDO"})
     }
 
     const handleKeyDown = e => {

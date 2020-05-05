@@ -6,7 +6,7 @@ function cellDataReducer(state, action) {
 
     switch (action.type) {
         //Toggle value of selected cells
-        case "toggleSelectedValue":
+        case "TOGGLE_SEL_CELLS_VALUE":
             let shouldEraseValue = state.data.queriedCellsAllHaveProperty(
                 cell=>(cell.value !== action.input),
                 cell=>(cell.selected && !cell.locked),
@@ -25,7 +25,7 @@ function cellDataReducer(state, action) {
             return newState
 
         //Toggle notes of selected cells
-        case "toggleSelectedNote":
+        case "TOGGLE_SEL_CELLS_NOTE":
             let shouldEraseNote = state.data.queriedCellsAllHaveProperty(
                 cell=>(!cell.notes || !cell.notes[action.input]),
                 cell=>(cell.selected && !cell.locked && !cell.value)
@@ -44,7 +44,7 @@ function cellDataReducer(state, action) {
             return newState
 
         //Clear value and notes of selected cells
-        case "clearSelectedCells":
+        case "CLEAR_SEL_CELLS":
             newState.data.forEachCell((cell)=>{
                 if(cell.selected && !cell.locked) {
                     cell.value = null
@@ -54,17 +54,17 @@ function cellDataReducer(state, action) {
             return newState
 
         //Set a cell to selected/not selected
-        case "setCellSelection":
+        case "SET_SEL":
             newState.data[action.cell.x][action.cell.y].selected = action.input
             return newState
         
         //Set a cell to the opposite selected state
-        case "toggleCellSelection":
+        case "TOGGLE_SEL":
             newState.data[action.cell.x][action.cell.y].selected = !state.data[action.cell.x][action.cell.y].selected
             return newState
 
         //Set all cells to not selected and the passed cell to selected
-        case "resetCellSelection":
+        case "RESET_SEL":
             newState.data.forEachCell((cell)=>{
                 cell.selected = false
             })
@@ -72,7 +72,7 @@ function cellDataReducer(state, action) {
             return newState
 
         //Apply the top of the undo stack to board data, and save it to redo stack
-        case "UNDO":        
+        case "MEM_UNDO":        
             let undoMemory = newState.memory.undo.pop()
             if (undoMemory) {
                 saveMemory(newState, "redo", state.data)
@@ -82,7 +82,7 @@ function cellDataReducer(state, action) {
             return newState
         
         //Apply the top of the redo stack to board data, and save it to undo stack
-        case "REDO":        
+        case "MEM_REDO":        
             let redoMemory = newState.memory.redo.pop()
             if (redoMemory) {
                 saveMemory(newState, "undo", state.data)
@@ -91,7 +91,7 @@ function cellDataReducer(state, action) {
             return newState
 
         //Push board data to the undo stack, and clear the redo stack
-        case "SAVE_NEW":
+        case "MEM_SAVE_NEW":
             //TODO: update memory only when board data has actually changed
             if(true) {
                 saveMemory(newState, "undo", state.data)
