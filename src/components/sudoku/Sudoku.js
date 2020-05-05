@@ -46,18 +46,6 @@ const Sudoku = ({data}) => {
         }
     }
 
-    const clearCellContents = () => {
-        dispatchCellData({type: "CLEAR_SEL_CELLS"})
-    }
-
-    const undo = () => {
-        dispatchCellData({type: "MEM_UNDO"})
-    }
-
-    const redo = () => {
-        dispatchCellData({type: "MEM_REDO"})
-    }
-
     const handleKeyDown = e => {
         switch (e.key) {
             case "1":
@@ -74,7 +62,7 @@ const Sudoku = ({data}) => {
 
             case "Delete":
             case "Backspace":
-                clearCellContents()
+                dispatchCellData({type: "CLEAR_SEL_CELLS"})
                 break;
                 
             default:
@@ -89,10 +77,10 @@ const Sudoku = ({data}) => {
 
     const controlPanelFunctions = {
         modifyCellContents,
-        clearCellContents,
+        clearCellContents: function() {dispatchCellData({type: "CLEAR_SEL_CELLS"})},
         setControlMode,
-        undo,
-        redo
+        undo: function() {dispatchCellData({type: "MEM_UNDO"})},
+        redo: function() {dispatchCellData({type: "MEM_REDO"})}
     }
 
     return(
