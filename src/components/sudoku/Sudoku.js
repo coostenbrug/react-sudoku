@@ -82,43 +82,6 @@ const Sudoku = ({data}) => {
         }
     }
 
-    const handleControlPanelClick = (e, code) => {
-        switch (code) {
-            case "1":
-            case "2":
-            case "3":
-            case "4":
-            case "5":
-            case "6":
-            case "7":
-            case "8":
-            case "9":
-                modifyCellContents(code)
-                break;
-
-            case "erase":
-                clearCellContents()
-                break;
-
-            case "ans":
-                setControlMode(0)
-                break;
-
-            case "note":
-                setControlMode(1)
-                break;
-
-            case "undo":
-                undo()
-                break;
-            case "redo":
-                redo()
-                break;
-            default:
-                break;
-        }
-    }
-
     const cellFunctions = {
         handleMouseDown: handleCellMouseDown,
         handleMouseEnter: handleCellMouseEnter
