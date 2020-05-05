@@ -6,11 +6,9 @@ import cellDataReducer from "./cellDataReducer"
 
 const Sudoku = ({data}) => {
     
-    const [cellData, dispatchCellData] = React.useReducer(cellDataReducer,new CellArray(data.cellData))
+    const [cellData, dispatchCellData] = React.useReducer(cellDataReducer,{data: new CellArray(data.cellData), memory: {undo: new Stack(), redo: new Stack()}})
     const [isSelecting, setIsSelecting] = React.useState(true)
     const [controlMode, setControlMode] = React.useState(0)
-    const undoMemory = React.useRef(new Stack())
-    const redoMemory = React.useRef(new Stack())
 
     React.useEffect(() => {
         document.addEventListener("keydown", handleKeyDown);
@@ -21,7 +19,7 @@ const Sudoku = ({data}) => {
         if (e.buttons === 1) {
             e.preventDefault()
             if (e.ctrlKey) {
-                setIsSelecting(!cellData[x][y].selected)
+                setIsSelecting(!cellData.data[x][y].selected)
                 dispatchCellData({type: "toggleCellSelection", cell: {x: x, y: y}})
             } else {
                 setIsSelecting(true)
@@ -36,25 +34,8 @@ const Sudoku = ({data}) => {
         }
     }
 
-    const saveToUndoMemory = () => {
-        //TODO: update memory only when board data has actually changed
-        // JSON.parse(JSON.stringify(obj)) is used to "clone" the object to save to memory
-        const saveMemory = new CellArray(JSON.parse(JSON.stringify(cellData)))
-        undoMemory.current.push(saveMemory)
-    }
-
-    const saveToRedoMemory = () => {
-        // JSON.parse(JSON.stringify(obj)) is used to "clone" the object to save to memory
-        const saveMemory = new CellArray(JSON.parse(JSON.stringify(cellData)))
-        redoMemory.current.push(saveMemory)
-    }
-
-    const clearRedoMemory = () => {
-        redoMemory.current.clear()
-    }
-
     const modifyCellContents = input => {
-        updateMemoryStacks()
+        dispatchCellData({type: "SAVE_NEW"})
 
         switch (controlMode) {
             default:
@@ -68,39 +49,16 @@ const Sudoku = ({data}) => {
     }
 
     const clearCellContents = () => {
-        updateMemoryStacks()
+        dispatchCellData({type: "SAVE_NEW"})
         dispatchCellData({type: "clearSelectedCells"})
     }
 
-    const applyMemoryToCellData = memory => {
-        dispatchCellData({type: "applyMemory", input: memory})
-    }
-
     const undo = () => {
-        //TODO: do not apply selected prop from memory
-        const memory = undoMemory.current.pop()
-        
-        if (memory) {
-            saveToRedoMemory()
-            applyMemoryToCellData(memory)
-        }
+        dispatchCellData({type: "UNDO"})
     }
 
     const redo = () => {
-        const memory = redoMemory.current.pop()
-        
-        if (memory) {
-            saveToUndoMemory()
-            applyMemoryToCellData(memory)
-        }
-    }
-
-    const updateMemoryStacks = () => {
-        //TODO: update memory only when board data has actually changed
-        if(true) {
-            saveToUndoMemory()
-            clearRedoMemory()
-        }
+        dispatchCellData({type: "REDO"})
     }
 
     const handleKeyDown = e => {
@@ -179,7 +137,7 @@ const Sudoku = ({data}) => {
 
     return(
     <div style={{display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
-        <SudokuBoard boardData={data.boardData} cellData={cellData} cellFunctions={cellFunctions}/>
+        <SudokuBoard boardData={data.boardData} cellData={cellData.data} cellFunctions={cellFunctions}/>
         <ControlPanel controlMode={controlMode} functions={controlPanelFunctions}/>
     </div>
 )}
