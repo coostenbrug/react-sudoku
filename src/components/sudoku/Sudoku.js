@@ -35,8 +35,6 @@ const Sudoku = ({data}) => {
     }
 
     const modifyCellContents = input => {
-        dispatchCellData({type: "MEM_SAVE_NEW"})
-
         switch (controlMode) {
             default:
             case 0:
@@ -49,7 +47,6 @@ const Sudoku = ({data}) => {
     }
 
     const clearCellContents = () => {
-        dispatchCellData({type: "MEM_SAVE_NEW"})
         dispatchCellData({type: "CLEAR_SEL_CELLS"})
     }
 

@@ -5,8 +5,11 @@ function cellDataReducer(state, action) {
     let newState = _.cloneDeep(state)
 
     switch (action.type) {
-        //Toggle value of selected cells
+        //Toggle value of selected cells (first saves undo memory and clears redo memory)
         case "TOGGLE_SEL_CELLS_VALUE":
+            saveMemory(newState, "undo", state.data)
+            newState.memory.redo.clear()
+
             let shouldEraseValue = state.data.queriedCellsAllHaveProperty(
                 cell=>(cell.value !== action.input),
                 cell=>(cell.selected && !cell.locked),
@@ -24,8 +27,11 @@ function cellDataReducer(state, action) {
             })
             return newState
 
-        //Toggle notes of selected cells
+        //Toggle notes of selected cells (first saves undo memory and clears redo memory)
         case "TOGGLE_SEL_CELLS_NOTE":
+            saveMemory(newState, "undo", state.data)
+            newState.memory.redo.clear()
+
             let shouldEraseNote = state.data.queriedCellsAllHaveProperty(
                 cell=>(!cell.notes || !cell.notes[action.input]),
                 cell=>(cell.selected && !cell.locked && !cell.value)
@@ -43,8 +49,11 @@ function cellDataReducer(state, action) {
             })
             return newState
 
-        //Clear value and notes of selected cells
+        //Clear value and notes of selected cells (first saves undo memory and clears redo memory)
         case "CLEAR_SEL_CELLS":
+            saveMemory(newState, "undo", state.data)
+            newState.memory.redo.clear()
+
             newState.data.forEachCell((cell)=>{
                 if(cell.selected && !cell.locked) {
                     cell.value = null
@@ -87,15 +96,6 @@ function cellDataReducer(state, action) {
             if (redoMemory) {
                 saveMemory(newState, "undo", state.data)
                 applyMemory(newState, redoMemory)
-            }
-            return newState
-
-        //Push board data to the undo stack, and clear the redo stack
-        case "MEM_SAVE_NEW":
-            //TODO: update memory only when board data has actually changed
-            if(true) {
-                saveMemory(newState, "undo", state.data)
-                newState.memory.redo.clear()
             }
             return newState
 
