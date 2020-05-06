@@ -3,12 +3,12 @@ import SudokuBoard from "./SudokuBoard"
 import ControlPanel from "./ControlPanel"
 import { CellArray, Stack } from "../../utils"
 import cellDataReducer from "./cellDataReducer"
-import {BoardData} from "../../types/types"
+import { BoardData, Cell } from "../../types/types"
 
 interface Props {
     data: {
         boardData: BoardData;
-        cellData: CellArray;
+        cellData: CellArray | Cell[][] | Object[][];
     } 
 }
 

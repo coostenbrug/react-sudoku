@@ -1,7 +1,7 @@
 import { Cell } from "../types/types"
 
 class CellArray extends Array {
-    constructor(data: Cell[][]) { 
+    constructor(data: CellArray | Cell[][] | Object[][]) { 
         super(data.length)
         Object.keys(data).forEach((row,i) => {
             this[i]= data[i]
