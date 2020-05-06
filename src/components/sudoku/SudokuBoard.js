@@ -1,6 +1,6 @@
 import React from "react"
 import CellGroup from "./CellGroup"
-import Cell from "./Cell"
+import { Cell } from "./Cell"
 import styled from "styled-components"
 
 const SudokuBoardWrap = styled.div({
