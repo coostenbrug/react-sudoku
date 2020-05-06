@@ -73,7 +73,7 @@ Cell.defaultProps = {
     xLoc: -1,
     yLoc: -1,
     notes: [],
-    bgColor: 0
+    bgColor: 1
 }
 
 export default Cell
