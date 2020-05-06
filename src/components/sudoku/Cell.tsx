@@ -1,22 +1,29 @@
 import React from "react"
 import styled from "styled-components"
 
+interface CellDivProps {
+    size: number;
+    selected: boolean;
+}
+
 const CellDiv = styled.div({
         display: "flex",
         position: "relative",
         border: "solid 1px black"
     },
-    ({size})=>({
-        width: size,
-        height: size
-    }),
-    ({selected})=>({
-        backgroundColor: selected ? "cyan" : "white"
+    (props: CellDivProps)=>({
+        width: props.size,
+        height: props.size,
+        backgroundColor: props.selected ? "cyan" : "white"
     })
 )
 
 CellDiv.defaultProps = {
-    size: "56px"
+    size: 56
+}
+
+interface CellTextProps {
+    locked: boolean;
 }
 
 const CellText = styled.p({
@@ -25,25 +32,32 @@ const CellText = styled.p({
     userSelect: "none",
     margin: "auto"
     },
-    ({locked})=>({
-        fontWeight: locked ? 500 : 400
+    (props: CellTextProps)=>({
+        fontWeight: props.locked ? 500 : 400
     })
 )
 
-const NoteText = styled.p(({position})=>({
-    margin: 0,
-    position: "absolute",
-    top: [4,22,39][Math.floor(position/3)],
-    left: [4,23,42][position % 3],
-    width: 10,
-    height: 14,
-    fontSize: "14px",
-    lineHeight: 1,
-    textAlign: "center",
-    userSelect: "none"
-}))
+CellText.defaultProps = {
+    locked: false
+}
 
-const renderNotes = notes => {
+interface NoteTextProps {
+    position: number;
+}
+const NoteText = styled.p`
+    margin: 0;
+    position: absolute;
+    top: ${(props: NoteTextProps) => [4,22,39][Math.floor(props.position/3)]+"px"};
+    left: ${(props: NoteTextProps) => [4,23,42][props.position % 3]+"px"};
+    width: 10;
+    height: 14;
+    font-size: 14px;
+    line-height: 1;
+    text-align: center;
+    user-select: none;
+`
+
+const renderNotes = (notes: boolean[]) => {
     let noteElements = new Array()
     let position = 0
     notes.forEach((note, i)=>{
@@ -62,6 +76,18 @@ const renderNotes = notes => {
     return noteElements
 }
 
+interface CellProps {
+    selected: boolean;
+    value: number;
+    locked: boolean;
+    handleMouseDown: Function;
+    handleMouseEnter: Function;
+    xLoc: number;
+    yLoc: number;
+    notes: boolean[];
+
+}
+
 const Cell = ({
         selected,
         value,
@@ -71,9 +97,10 @@ const Cell = ({
         xLoc,
         yLoc,
         notes
-    }, props) => {
+    }: CellProps, props: CellProps) => {
     return (
         <CellDiv
+            size={56}
             onMouseDown={(e) => handleMouseDown(e, xLoc, yLoc)}
             onMouseEnter={(e) => handleMouseEnter(e, xLoc, yLoc)}
             selected={selected}
