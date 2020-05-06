@@ -12,7 +12,7 @@ const ValueText = styled.p({
     margin: "auto"
     },
     (props: Props)=>({
-        fontWeight: props.locked ? 500 : 400
+        fontWeight: props.locked ? 400 : 300
     })
 )
 

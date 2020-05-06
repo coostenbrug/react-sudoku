@@ -20,7 +20,7 @@ const theme = {
         darkBlue: "#1E555C"
     },
     fonts: {
-        base: "'Notable', sans-serif;",
+        base: "'Rubik', sans-serif;",
         heading: "'Montserrat Subrayada', sans-serif"
     }
 }
