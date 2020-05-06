@@ -22,6 +22,7 @@ export interface Cell {
     notes?: boolean[];
     locked?: boolean;
     selected?: boolean;
+    bgColor?: number;
 }
 
 export interface BoardData {

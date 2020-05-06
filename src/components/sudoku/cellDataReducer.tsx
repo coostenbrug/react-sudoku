@@ -18,7 +18,7 @@ function cellDataReducer(state: CellDataState, action: Action) {
                 (cell: Cell)=>(cell.selected && !cell.locked),
             )
             
-              newState.data.forEachCell((cell: Cell)=>{
+            newState.data.forEachCell((cell: Cell)=>{
                 if(cell.selected && !cell.locked) {
                     if (shouldEraseValue) {
                         cell.value = undefined
@@ -41,7 +41,7 @@ function cellDataReducer(state: CellDataState, action: Action) {
                 (cell: Cell)=>(cell.selected && !cell.locked && !cell.value)
               )
             
-              newState.data.forEachCell((cell: Cell)=>{
+            newState.data.forEachCell((cell: Cell)=>{
                 if(cell.selected && !cell.locked && !cell.value) {
                     if (!cell.notes) {cell.notes = new Array(9)}
                     if (shouldEraseNote) {
@@ -49,6 +49,19 @@ function cellDataReducer(state: CellDataState, action: Action) {
                     } else {
                         cell.notes[action.input] = true
                     }
+                }
+            })
+            return newState
+        }
+
+        //Set color of selected cells (first saves undo memory and clears redo memory)
+        case "SET_SEL_CELLS_COLOR": {
+            saveMemory(newState, "undo", state.data)
+            newState.memory.redo.clear()
+            
+            newState.data.forEachCell((cell: Cell)=>{
+                if(cell.selected) {
+                    cell.bgColor = action.input
                 }
             })
             return newState
@@ -131,6 +144,7 @@ function applyMemory(state: CellDataState, memory: CellArray) {
     state.data.forEachCell((cell: Cell, i: number, j: number) => {
         cell.value = memory[i][j].value
         cell.notes = memory[i][j].notes
+        cell.bgColor= memory[i][j].bgColor
     })
 }
 

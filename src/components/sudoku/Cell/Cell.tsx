@@ -31,7 +31,7 @@ interface Props {
     xLoc: number;
     yLoc: number;
     notes: boolean[];
-
+    bgColor: number;
 }
 
 const Cell = ({
@@ -42,11 +42,13 @@ const Cell = ({
         handleMouseEnter,
         xLoc,
         yLoc,
-        notes
+        notes,
+        bgColor
     }: Props, props: Props) => {
     return (
         <CellDiv
             size={56}
+            bgColor={bgColor}
             onMouseDown={(e) => handleMouseDown(e, xLoc, yLoc)}
             onMouseEnter={(e) => handleMouseEnter(e, xLoc, yLoc)}
             selected={selected}
@@ -70,7 +72,8 @@ Cell.defaultProps = {
     handleMouseEnter: () => {},
     xLoc: -1,
     yLoc: -1,
-    notes: []
+    notes: [],
+    bgColor: 0
 }
 
 export default Cell

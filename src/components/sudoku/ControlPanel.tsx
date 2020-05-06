@@ -74,6 +74,7 @@ const ControlPanel = (props: Props) => {
             <ControlPanelRow>
                 <ControlButton pressed={controlMode === 0} width={84} onClick={function() {setControlMode(0)}}>Ans</ControlButton>
                 <ControlButton pressed={controlMode === 1} width={84} onClick={function() {setControlMode(1)}}>Note</ControlButton>
+                <ControlButton pressed={controlMode === 2} width={84} onClick={function() {setControlMode(2)}}>Color</ControlButton>
                 <ControlButton disabled={undoDisabled} width={84} onClick={function() {undo()}}>Undo</ControlButton>
                 <ControlButton disabled={redoDisabled} width={84} onClick={function() {redo()}}>Redo</ControlButton>
             </ControlPanelRow>

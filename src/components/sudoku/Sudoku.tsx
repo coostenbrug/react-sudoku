@@ -52,6 +52,9 @@ const Sudoku = (props: Props) => {
             case 1:
                 dispatchCellData({type: "TOGGLE_SEL_CELLS_NOTE", input: input})
                 break;
+            case 2:
+                dispatchCellData({type: "SET_SEL_CELLS_COLOR", input: input})
+                break;
         }
     }
 
