@@ -33,6 +33,17 @@ function cellDataReducer(state: CellDataState, action: Action) {
 
         //Toggle notes of selected cells (first saves undo memory and clears redo memory)
         case "TOGGLE_SEL_CELLS_NOTE": {
+            // return no change if all cells selected have a value already
+            let noChange = true
+            state.data.forEachCell((cell: Cell) => {
+                console.log(true && !!cell.value)
+                if (cell.selected && !cell.locked && !cell.value) {
+                    noChange = false
+                } 
+            })
+
+            if (noChange) {return state}
+
             saveMemory(newState, "undo", state.data)
             newState.memory.redo.clear()
 
@@ -69,11 +80,21 @@ function cellDataReducer(state: CellDataState, action: Action) {
 
         //Clear value and notes of selected cells (first saves undo memory and clears redo memory)
         case "CLEAR_SEL_CELLS": {
+            // return no change if cells are already clear
+            let noChange = true
+            state.data.forEachCell((cell: Cell) => {
+                if (cell.selected && !cell.locked && !cellIsEmpty(cell)) {
+                    noChange = false
+                } 
+            })
+
+            if (noChange) {return state}
+
             saveMemory(newState, "undo", state.data)
             newState.memory.redo.clear()
 
             newState.data.forEachCell((cell: Cell)=>{
-                if(cell.selected && !cell.locked) {
+                if (cell.selected && !cell.locked) {
                     cell.value = undefined
                     cell.notes = []
                 }
@@ -130,8 +151,7 @@ function cellDataReducer(state: CellDataState, action: Action) {
 }
 
 function saveMemory(state: CellDataState, stack: string, cellArray: CellArray) {
-    // TODO: update memory only when board data has actually changed
-    // JSON.parse(JSON.stringify(obj)) is used to "clone" the object to save to memory
+    // TODO: update memory only when board data has actually changed broadly instead of individually in cases CLEAR_SEL_CELLS and TOGGLE_SEL_CELLS_NOTES
     const saveMemory = _.cloneDeep(cellArray)
     if (stack === "undo") {
         state.memory.undo.push(saveMemory)
@@ -146,6 +166,19 @@ function applyMemory(state: CellDataState, memory: CellArray) {
         cell.notes = memory[i][j].notes
         cell.bgColor= memory[i][j].bgColor
     })
+}
+
+function cellIsEmpty(cell: Cell) {
+    return (
+        cell.value === undefined
+        && 
+        (
+            cell.notes === undefined 
+            || 
+            cell.notes?.every((note: boolean) => note === false
+            )
+        )
+    )
 }
 
 export default cellDataReducer
