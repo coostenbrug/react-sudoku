@@ -1,12 +1,12 @@
 const cellColors = [
     "#ffffff",
-    "#72ff6b",
-    "#ff6b70",
-    "#73deff",
-    "#ff9f73",
-    "#a95eff",
-    "#ffd45e",
-    "#6efff8",
-    "#ff906e"
+    "#ff74b0",
+    "#b3ff74",
+    "#74f1ff",
+    "#cc934e",
+    "#ffad60",
+    "#fffc60",
+    "#ff5c53",
+    "#7ca1ff"
 ]
 export default cellColors
