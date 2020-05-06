@@ -1,6 +1,9 @@
 import _ from "lodash"
+import { Cell, CellDataState, Action } from "../../types/types"
+import { CellArray } from "../../utils"
 
-function cellDataReducer(state, action) {
+
+function cellDataReducer(state: CellDataState, action: Action) {
 
     let newState = _.cloneDeep(state)
 
@@ -11,14 +14,14 @@ function cellDataReducer(state, action) {
             newState.memory.redo.clear()
 
             let shouldEraseValue = state.data.queriedCellsAllHaveProperty(
-                cell=>(cell.value !== action.input),
-                cell=>(cell.selected && !cell.locked),
+                (cell: Cell)=>(cell.value !== action.input),
+                (cell: Cell)=>(cell.selected && !cell.locked),
             )
             
-              newState.data.forEachCell((cell)=>{
+              newState.data.forEachCell((cell: Cell)=>{
                 if(cell.selected && !cell.locked) {
                     if (shouldEraseValue) {
-                        cell.value = null
+                        cell.value = undefined
                     } else {
                         cell.value = action.input
                         cell.notes = []
@@ -34,11 +37,11 @@ function cellDataReducer(state, action) {
             newState.memory.redo.clear()
 
             let shouldEraseNote = state.data.queriedCellsAllHaveProperty(
-                cell=>(!cell.notes || !cell.notes[action.input]),
-                cell=>(cell.selected && !cell.locked && !cell.value)
+                (cell: Cell)=>(!cell.notes || !cell.notes[action.input]),
+                (cell: Cell)=>(cell.selected && !cell.locked && !cell.value)
               )
             
-              newState.data.forEachCell((cell)=>{
+              newState.data.forEachCell((cell: Cell)=>{
                 if(cell.selected && !cell.locked && !cell.value) {
                     if (!cell.notes) {cell.notes = new Array(9)}
                     if (shouldEraseNote) {
@@ -56,9 +59,9 @@ function cellDataReducer(state, action) {
             saveMemory(newState, "undo", state.data)
             newState.memory.redo.clear()
 
-            newState.data.forEachCell((cell)=>{
+            newState.data.forEachCell((cell: Cell)=>{
                 if(cell.selected && !cell.locked) {
-                    cell.value = null
+                    cell.value = undefined
                     cell.notes = []
                 }
             })
@@ -67,22 +70,22 @@ function cellDataReducer(state, action) {
 
         //Set a cell to selected/not selected
         case "SET_SEL": {
-            newState.data[action.cell.x][action.cell.y].selected = action.input
+            newState.data[action.cell!.x][action.cell!.y].selected = action.input
             return newState
         }
 
         //Set a cell to the opposite selected state
         case "TOGGLE_SEL": {
-            newState.data[action.cell.x][action.cell.y].selected = !state.data[action.cell.x][action.cell.y].selected
+            newState.data[action.cell!.x][action.cell!.y].selected = !state.data[action.cell!.x][action.cell!.y].selected
             return newState
         }
 
         //Set all cells to not selected and the passed cell to selected
         case "RESET_SEL": {
-            newState.data.forEachCell((cell)=>{
+            newState.data.forEachCell((cell: Cell)=>{
                 cell.selected = false
             })
-            newState.data[action.cell.x][action.cell.y].selected = true
+            newState.data[action.cell!.x][action.cell!.y].selected = true
             return newState
         }
 
@@ -113,15 +116,19 @@ function cellDataReducer(state, action) {
     }
 }
 
-function saveMemory(state, stack, cellData) {
+function saveMemory(state: CellDataState, stack: string, cellArray: CellArray) {
     // TODO: update memory only when board data has actually changed
     // JSON.parse(JSON.stringify(obj)) is used to "clone" the object to save to memory
-    const saveMemory = _.cloneDeep(cellData)
-    state.memory[stack].push(saveMemory)
+    const saveMemory = _.cloneDeep(cellArray)
+    if (stack === "undo") {
+        state.memory.undo.push(saveMemory)
+    } else {
+        state.memory.redo.push(saveMemory)
+    }
 }
 
-function applyMemory(state, memory) {
-    state.data.forEachCell((cell,i,j) => {
+function applyMemory(state: CellDataState, memory: CellArray) {
+    state.data.forEachCell((cell: Cell, i: number, j: number) => {
         cell.value = memory[i][j].value
         cell.notes = memory[i][j].notes
     })
