@@ -1,6 +1,6 @@
 import React from "react"
 import SudokuBoard from "./SudokuBoard"
-import ControlPanel from "./ControlPanel"
+import { ControlPanel } from "../controls"
 import { CellArray, Stack } from "../../utils"
 import cellDataReducer from "./cellDataReducer"
 import { BoardData, Cell } from "../../types/types"
