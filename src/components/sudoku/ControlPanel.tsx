@@ -27,20 +27,35 @@ const ControlPanelWrapper = styled.div({
     }
 })
 
-const ControlPanel = ({functions, stateProps}) => {
+interface Props {
+    functions: {
+        modifyCellContents: Function;
+        clearCellContents: Function;
+        setControlMode: Function;
+        undo: Function;
+        redo: Function;
+    },
+    stateProps: {
+        controlMode: number;
+        undoDisabled: boolean;
+        redoDisabled: boolean;
+    }
+}
+
+const ControlPanel = (props: Props) => {
     const {
         modifyCellContents,
         clearCellContents,
         setControlMode,
         undo,
         redo
-    } = functions
+    } = props.functions
     
     const {
         controlMode,
         undoDisabled,
         redoDisabled
-    } = stateProps
+    } = props.stateProps
 
     return(
         <ControlPanelWrapper>

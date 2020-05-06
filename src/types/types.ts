@@ -23,3 +23,10 @@ export interface Cell {
     locked?: boolean;
     selected?: boolean;
 }
+
+export interface BoardData {
+    height: number;
+    groupHeight: number;
+    width: number;
+    groupWidth: number;
+}

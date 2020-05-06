@@ -1,10 +1,16 @@
 import styled from "styled-components"
 
-const ControlButton = styled.button(({height, width, pressed})=>({
-    background: pressed ? "#cccccc" : "#e3e3e3",
+interface Props {
+    height?: number;
+    width?: number;
+    pressed?: boolean;
+}
+
+const ControlButton = styled.button((props: Props)=>({
+    background: props.pressed ? "#cccccc" : "#e3e3e3",
     borderRadius: 8,
-    height: height,
-    width: width,
+    height: props.height,
+    width: props.width,
     fontSize: "22px",
     ":active": {
         background: "#cccccc"

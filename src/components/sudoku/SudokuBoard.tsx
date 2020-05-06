@@ -2,29 +2,42 @@ import React from "react"
 import CellGroup from "./CellGroup"
 import { Cell } from "./Cell"
 import styled from "styled-components"
+import { BoardData } from "../../types/types"
+import { CellArray } from "../../utils"
 
 const SudokuBoardWrap = styled.div({
     margin: "auto"
 })
 
-const SudokuBoard = ({boardData, cellData, cellFunctions}) => {
+interface Props {
+    boardData: BoardData;
+    cellData: CellArray;
+    cellFunctions: {
+        handleMouseDown: Function;
+        handleMouseEnter: Function;
+    }
+}
+
+const SudokuBoard = (props: Props) => {
     const { 
         height,
         groupHeight,
         width,
         groupWidth,
-    } = boardData
+    } = props.boardData
 
     const {
         handleMouseDown,
         handleMouseEnter
-    } = cellFunctions
+    } = props.cellFunctions
 
-    const mapCells = (gri,gci,i) => {
-        let elementArray = new Array(boardData.groupWidth)
-        for (let j = 0; j < boardData.groupWidth; j++) {
-            let x = boardData.groupHeight*gri+i
-            let y = boardData.groupWidth*gci+j
+    const { cellData } = props
+
+    const mapCells = (gri: number , gci: number, i: number) => {
+        let elementArray = new Array(groupWidth)
+        for (let j = 0; j < groupWidth; j++) {
+            let x = groupHeight*gri+i
+            let y = groupWidth*gci+j
             let cell = cellData[x][y]
             elementArray[j] = (
                 <Cell
@@ -40,7 +53,7 @@ const SudokuBoard = ({boardData, cellData, cellFunctions}) => {
         return elementArray
     }
 
-    const mapCellRows = (gri,gci) => {
+    const mapCellRows = (gri: number, gci: number) => {
         let elementArray = new Array(groupHeight)
         for (let i = 0; i < groupHeight; i++) {
             elementArray[i] = (
@@ -58,7 +71,7 @@ const SudokuBoard = ({boardData, cellData, cellFunctions}) => {
                 <div style={{display: "flex"}} key={`GroupRow ${gri}`}>
                     {[...Array(width/groupWidth)].map((e,gci)=>(
                         <CellGroup key={`Group r:${gri},c:${gci}`}>
-                            {mapCellRows(gri,gci,cellData)}
+                            {mapCellRows(gri,gci)}
                         </CellGroup>
                     ))}
                 </div>

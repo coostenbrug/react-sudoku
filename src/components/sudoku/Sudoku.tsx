@@ -3,8 +3,17 @@ import SudokuBoard from "./SudokuBoard"
 import ControlPanel from "./ControlPanel"
 import { CellArray, Stack } from "../../utils"
 import cellDataReducer from "./cellDataReducer"
+import {BoardData} from "../../types/types"
 
-const Sudoku = ({data}) => {
+interface Props {
+    data: {
+        boardData: BoardData;
+        cellData: CellArray;
+    } 
+}
+
+const Sudoku = (props: Props) => {
+    const { data } = props
     
     const [cellData, dispatchCellData] = React.useReducer(cellDataReducer,{data: new CellArray(data.cellData), memory: {undo: new Stack(), redo: new Stack()}})
     const [isSelecting, setIsSelecting] = React.useState(true)
@@ -15,7 +24,7 @@ const Sudoku = ({data}) => {
         return () => document.removeEventListener("keydown", handleKeyDown);
     })
       
-    const handleCellMouseDown = (e,x,y) => {
+    const handleCellMouseDown = (e: MouseEvent, x: number, y: number) => {
         if (e.buttons === 1) {
             e.preventDefault()
             if (e.ctrlKey) {
@@ -28,13 +37,13 @@ const Sudoku = ({data}) => {
         }
     }
 
-    const handleCellMouseEnter = (e,x,y) => {
+    const handleCellMouseEnter = (e: MouseEvent, x: number, y: number) => {
         if (e.buttons === 1) {
             dispatchCellData({type: "SET_SEL", cell: {x: x, y: y}, input: isSelecting})
         }
     }
 
-    const modifyCellContents = input => {
+    const modifyCellContents = (input: string) => {
         switch (controlMode) {
             default:
             case 0:
@@ -46,7 +55,7 @@ const Sudoku = ({data}) => {
         }
     }
 
-    const handleKeyDown = e => {
+    const handleKeyDown = (e: KeyboardEvent) => {
         switch (e.key) {
             case "1":
             case "2":
