@@ -1,10 +1,13 @@
 class Stack {
+    private count: number;
+    private storage: any[];
+    
     constructor() {
         this.count = 0
-        this.storage = {}
+        this.storage = []
     }
 
-    push(value) {
+    push(value: any) {
         this.storage[this.count] = value
         this.count++;
     }
