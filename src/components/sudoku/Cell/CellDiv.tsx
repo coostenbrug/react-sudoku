@@ -10,8 +10,6 @@ interface Props {
 
 const getBackgroundColor = (colorIndex: number, selected: boolean) => {
     if (selected) {
-        console.log(colorIndex-1)
-        console.log(cellColors[0])
         return mix("#abc1d1",cellColors[colorIndex-1],0.6).toString()
     } else {
         return cellColors[colorIndex-1]

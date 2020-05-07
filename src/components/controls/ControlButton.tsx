@@ -10,6 +10,7 @@ interface Props {
     controlMode?: number;
     disabled?: boolean;
     onClick?: () => void;
+    color?: string;
 }
 
 const ControlButton = (props: Props) => (
@@ -20,7 +21,10 @@ const ControlButton = (props: Props) => (
       disabled={props.disabled}
       onClick={props.onClick}
     >
-        <ControlButtonText controlMode={props.controlMode}>{props.children}</ControlButtonText>
+        <ControlButtonText
+          controlMode={props.controlMode}
+          color={props.color}
+          >{props.children}</ControlButtonText>
     </ControlButtonWrapper>
 )
 
