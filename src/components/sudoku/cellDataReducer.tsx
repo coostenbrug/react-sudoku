@@ -36,7 +36,6 @@ function cellDataReducer(state: CellDataState, action: Action) {
             // return no change if all cells selected have a value already
             let noChange = true
             state.data.forEachCell((cell: Cell) => {
-                console.log(true && !!cell.value)
                 if (cell.selected && !cell.locked && !cell.value) {
                     noChange = false
                 } 
