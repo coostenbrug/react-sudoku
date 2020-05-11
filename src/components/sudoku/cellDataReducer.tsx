@@ -8,11 +8,8 @@ function cellDataReducer(state: CellDataState, action: Action) {
     let newState = _.cloneDeep(state)
 
     switch (action.type) {
-        //Toggle value of selected cells (first saves undo memory and clears redo memory)
+        //Toggle value of selected cells
         case "TOGGLE_SEL_CELLS_VALUE": {
-            saveMemory(newState, "undo", state.data)
-            newState.memory.redo.clear()
-
             let shouldEraseValue = state.data.queriedCellsAllHaveProperty(
                 (cell: Cell)=>(cell.value !== action.input),
                 (cell: Cell)=>(cell.selected && !cell.locked),
@@ -28,24 +25,12 @@ function cellDataReducer(state: CellDataState, action: Action) {
                     }
                 }
             })
-            return newState
+
+            return deepCompareStateData(state, newState)
         }
 
-        //Toggle notes of selected cells (first saves undo memory and clears redo memory)
+        //Toggle notes of selected cells 
         case "TOGGLE_SEL_CELLS_NOTE": {
-            // return no change if all cells selected have a value already
-            let noChange = true
-            state.data.forEachCell((cell: Cell) => {
-                if (cell.selected && !cell.locked && !cell.value) {
-                    noChange = false
-                } 
-            })
-
-            if (noChange) {return state}
-
-            saveMemory(newState, "undo", state.data)
-            newState.memory.redo.clear()
-
             let shouldEraseNote = state.data.queriedCellsAllHaveProperty(
                 (cell: Cell)=>(!cell.notes || !cell.notes[action.input]),
                 (cell: Cell)=>(cell.selected && !cell.locked && !cell.value)
@@ -61,64 +46,51 @@ function cellDataReducer(state: CellDataState, action: Action) {
                     }
                 }
             })
-            return newState
+            return deepCompareStateData(state, newState)
         }
 
-        //Set color of selected cells (first saves undo memory and clears redo memory)
+        //Set color of selected cells
         case "SET_SEL_CELLS_COLOR": {
-            saveMemory(newState, "undo", state.data)
-            newState.memory.redo.clear()
-            
             newState.data.forEachCell((cell: Cell)=>{
                 if(cell.selected) {
                     cell.bgColor = action.input
                 }
             })
-            return newState
+            return deepCompareStateData(state, newState)
         }
 
-        //Clear value and notes of selected cells (first saves undo memory and clears redo memory)
+        //Clear value, notes, or colors of selected cells
         case "CLEAR_SEL_CELLS": {
-            let noValueChange = true
+
+            // if any cell contains a note or value
+              // clear notes and values
+            // else clear colors
+
+            let selectedCellsAreEmpty = true
             state.data.forEachCell((cell: Cell) => {
                 if (cell.selected && !cell.locked && !cellIsEmpty(cell)) {
-                    noValueChange = false
+                    selectedCellsAreEmpty = false
                 } 
             })
 
-            if (noValueChange) {
-                let noColorChange = true
-                state.data.forEachCell((cell: Cell) => {
-                    if (cell.selected && cell.bgColor !== 1) {
-                        noColorChange = false
-                    } 
+            if (selectedCellsAreEmpty) {
+                // clear colors
+                newState.data.forEachCell((cell: Cell)=>{
+                    if (cell.selected) {
+                        cell.bgColor = 1
+                    }
                 })
-
-                if (noColorChange) {
-                    return state
-                } else {
-                    saveMemory(newState, "undo", state.data)
-                    newState.memory.redo.clear()
-    
-                    newState.data.forEachCell((cell: Cell)=>{
-                        if (cell.selected) {
-                            cell.bgColor = 1
-                        }
-                    })
-                    return newState
-                }
             } else {
-                saveMemory(newState, "undo", state.data)
-                newState.memory.redo.clear()
-
+                //clear notes and values
                 newState.data.forEachCell((cell: Cell)=>{
                     if (cell.selected && !cell.locked) {
                         cell.value = undefined
                         cell.notes = []
                     }
                 })
-                return newState
             }
+
+            return deepCompareStateData(state, newState)
         }
 
         //Set a cell to selected/not selected
@@ -170,7 +142,6 @@ function cellDataReducer(state: CellDataState, action: Action) {
 }
 
 function saveMemory(state: CellDataState, stack: string, cellArray: CellArray) {
-    // TODO: update memory only when board data has actually changed broadly instead of individually in cases CLEAR_SEL_CELLS and TOGGLE_SEL_CELLS_NOTES
     const saveMemory = _.cloneDeep(cellArray)
     if (stack === "undo") {
         state.memory.undo.push(saveMemory)
@@ -199,5 +170,32 @@ function cellIsEmpty(cell: Cell) {
         )
     )
 }
+
+function deepCompareStateData(state: CellDataState, newState: CellDataState) {
+
+    let shouldUpdate = false
+
+    state.data.forEachCell((cell: Cell, i: number, j: number) => {
+        if(
+            cell.value !== newState.data[i][j].value
+            ||
+            cell.notes !== newState.data[i][j].notes
+            ||
+            cell.bgColor !== newState.data[i][j].bgColor
+            ) {
+
+            shouldUpdate = true
+        }
+    })
+
+    if (shouldUpdate) {
+        saveMemory(newState, "undo", state.data)
+        newState.memory.redo.clear()
+        return newState
+    } else {
+        return state
+    }
+}
+
 
 export default cellDataReducer
