@@ -27,7 +27,6 @@ const ControlModeController = ({children}: Props) => {
 
     React.useEffect(() => {
         let lastHeldMode = null
-        console.log(heldModes)
         heldModes.forEach((held, i) => {
             if (held) {
                 lastHeldMode = i
