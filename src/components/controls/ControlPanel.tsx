@@ -36,16 +36,16 @@ interface Props {
         setControlMode: Function;
         undo: Function;
         redo: Function;
-    },
+    };
     stateProps: {
         controlMode: number;
         undoDisabled: boolean;
         redoDisabled: boolean;
-    }
+    };
 }
 
 
-const ControlPanel = (props: Props) => {
+const ControlPanel = (props: Props): React.ReactElement => {
 
     const {
         modifyCellContents,
@@ -64,30 +64,30 @@ const ControlPanel = (props: Props) => {
     return(
         <ControlPanelWrapper>
             <ControlPanelRow>
-                <ControlButton keys={["1"]} color={cellColors[0]} controlMode={controlMode} onClick={function() {modifyCellContents(1)}}>1</ControlButton>
-                <ControlButton keys={["2"]} color={cellColors[1]} controlMode={controlMode} onClick={function() {modifyCellContents(2)}}>2</ControlButton>
-                <ControlButton keys={["3"]} color={cellColors[2]} controlMode={controlMode} onClick={function() {modifyCellContents(3)}}>3</ControlButton>
-                <ControlButton keys={["4"]} color={cellColors[3]} controlMode={controlMode} onClick={function() {modifyCellContents(4)}}>4</ControlButton>
-                <ControlButton keys={["5"]} color={cellColors[4]} controlMode={controlMode} onClick={function() {modifyCellContents(5)}}>5</ControlButton>
-                <ControlButton keys={["6"]} color={cellColors[5]} controlMode={controlMode} onClick={function() {modifyCellContents(6)}}>6</ControlButton>
-                <ControlButton keys={["7"]} color={cellColors[6]} controlMode={controlMode} onClick={function() {modifyCellContents(7)}}>7</ControlButton>
-                <ControlButton keys={["8"]} color={cellColors[7]} controlMode={controlMode} onClick={function() {modifyCellContents(8)}}>8</ControlButton>
-                <ControlButton keys={["9"]} color={cellColors[8]} controlMode={controlMode} onClick={function() {modifyCellContents(9)}}>9</ControlButton>
-                <ControlButton keys={["Delete","Backspace"]} controlMode={-1} onClick={function() {clearCellContents()}}>X</ControlButton>
+                <ControlButton keys={["1"]} color={cellColors[0]} controlMode={controlMode} onClick={function(): void {modifyCellContents(1)}}>1</ControlButton>
+                <ControlButton keys={["2"]} color={cellColors[1]} controlMode={controlMode} onClick={function(): void {modifyCellContents(2)}}>2</ControlButton>
+                <ControlButton keys={["3"]} color={cellColors[2]} controlMode={controlMode} onClick={function(): void {modifyCellContents(3)}}>3</ControlButton>
+                <ControlButton keys={["4"]} color={cellColors[3]} controlMode={controlMode} onClick={function(): void {modifyCellContents(4)}}>4</ControlButton>
+                <ControlButton keys={["5"]} color={cellColors[4]} controlMode={controlMode} onClick={function(): void {modifyCellContents(5)}}>5</ControlButton>
+                <ControlButton keys={["6"]} color={cellColors[5]} controlMode={controlMode} onClick={function(): void {modifyCellContents(6)}}>6</ControlButton>
+                <ControlButton keys={["7"]} color={cellColors[6]} controlMode={controlMode} onClick={function(): void {modifyCellContents(7)}}>7</ControlButton>
+                <ControlButton keys={["8"]} color={cellColors[7]} controlMode={controlMode} onClick={function(): void {modifyCellContents(8)}}>8</ControlButton>
+                <ControlButton keys={["9"]} color={cellColors[8]} controlMode={controlMode} onClick={function(): void {modifyCellContents(9)}}>9</ControlButton>
+                <ControlButton keys={["Delete","Backspace"]} controlMode={-1} onClick={function(): void {clearCellContents()}}>X</ControlButton>
             </ControlPanelRow>
             <ControlPanelRow>
-                <ControlButton controlMode={-1} pressed={controlMode === 0} width={100} onClick={function() {setControlMode(0)}}>Ans</ControlButton>
-                <ControlButton controlMode={-1} pressed={controlMode === 1} width={100} onClick={function() {setControlMode(1)}}>Note</ControlButton>
-                <ControlButton controlMode={-1} pressed={controlMode === 2} width={100} onClick={function() {setControlMode(2)}}>Color</ControlButton>
-                <ControlButton keys={[","]} controlMode={-1} disabled={undoDisabled} width={100} onClick={function() {undo()}}>Undo</ControlButton>
-                <ControlButton keys={["."]} controlMode={-1} disabled={redoDisabled} width={100} onClick={function() {redo()}}>Redo</ControlButton>
+                <ControlButton controlMode={-1} pressed={controlMode === 0} width={100} onClick={function(): void {setControlMode(0)}}>Ans</ControlButton>
+                <ControlButton controlMode={-1} pressed={controlMode === 1} width={100} onClick={function(): void {setControlMode(1)}}>Note</ControlButton>
+                <ControlButton controlMode={-1} pressed={controlMode === 2} width={100} onClick={function(): void {setControlMode(2)}}>Color</ControlButton>
+                <ControlButton keys={[","]} controlMode={-1} disabled={undoDisabled} width={100} onClick={function(): void {undo()}}>Undo</ControlButton>
+                <ControlButton keys={["."]} controlMode={-1} disabled={redoDisabled} width={100} onClick={function(): void {redo()}}>Redo</ControlButton>
             </ControlPanelRow>
         </ControlPanelWrapper>
     )
 }
 
 ControlPanel.defaultProps = {
-    handleOnClick: () => {}
+    handleOnClick: (): void => {return}
 }
 
 export default ControlPanel

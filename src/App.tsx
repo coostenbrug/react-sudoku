@@ -18,7 +18,7 @@ const GlobalStyle = createGlobalStyle({
   }
 })
 
-function App() {
+function App(): React.ReactElement {
   return (
     <ThemeProvider theme={theme}>
       <Helmet>

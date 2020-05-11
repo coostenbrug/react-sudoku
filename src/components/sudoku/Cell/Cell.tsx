@@ -3,8 +3,8 @@ import NoteText from "./NoteText"
 import CellDiv from "./CellDiv"
 import ValueText from "./ValueText"
 
-const renderNotes = (notes: boolean[]) => {
-    let noteElements = new Array()
+const renderNotes = (notes: boolean[]): React.ReactElement[] => {
+    const noteElements: React.ReactElement[] = []
     let position = 0
     notes.forEach((note, i)=>{
         if(note === true) {
@@ -44,13 +44,13 @@ const Cell = ({
         yLoc,
         notes,
         bgColor
-    }: Props, props: Props) => {
+    }: Props, props: Props): React.ReactElement => {
     return (
         <CellDiv
             size={56}
             bgColor={bgColor}
-            onMouseDown={(e) => handleMouseDown(e, xLoc, yLoc)}
-            onMouseEnter={(e) => handleMouseEnter(e, xLoc, yLoc)}
+            onMouseDown={(e): void => handleMouseDown(e, xLoc, yLoc)}
+            onMouseEnter={(e): void => handleMouseEnter(e, xLoc, yLoc)}
             selected={selected}
             {...props}>
             {value ? 
@@ -68,8 +68,8 @@ Cell.defaultProps = {
     selected: false,
     value: null,
     locked: false,
-    handleMouseDown: () => {},
-    handleMouseEnter: () => {},
+    handleMouseDown: (): void => {return},
+    handleMouseEnter: (): void => {return},
     xLoc: -1,
     yLoc: -1,
     notes: [],

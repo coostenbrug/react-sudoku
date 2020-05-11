@@ -7,8 +7,8 @@ import { CellArray } from "../../utils"
 interface Props {
     data: {
         boardData: BoardData;
-        cellData: CellArray | Cell[][] | Object[][];
-    } 
+        cellData: CellArray | Cell[][] | Record<string, any>[][];
+    }; 
 }
 
 interface ControlModeControllerProps {
@@ -16,8 +16,8 @@ interface ControlModeControllerProps {
     setControlMode: Function;
 }
 
-const Sudoku = (props: Props) => (
-    <ControlModeController>{({controlMode, setControlMode}: ControlModeControllerProps) =>
+const Sudoku = (props: Props): React.ReactElement => (
+    <ControlModeController>{({controlMode, setControlMode}: ControlModeControllerProps): React.ReactElement =>
         <SudokuPlayInterface data={props.data} controlMode={controlMode} setControlMode={setControlMode}/>
     }</ControlModeController>
 )

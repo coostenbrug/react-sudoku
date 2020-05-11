@@ -8,7 +8,7 @@ interface Props {
     bgColor: number;
 }
 
-const getBackgroundColor = (colorIndex: number, selected: boolean) => {
+const getBackgroundColor = (colorIndex: number, selected: boolean): string => {
     if (selected) {
         return mix("#a0b3d9",cellColors[colorIndex-1],0.3).toString()
     } else {
@@ -20,9 +20,9 @@ const CellDiv = styled.div`
     display: flex;
     position: relative;
     border: solid 1px black;
-    width: ${(props: Props) => props.size}px;
-    height: ${(props: Props) => props.size}px;
-    background-color: ${(props: Props) => getBackgroundColor(props.bgColor, props.selected)};
+    width: ${(props: Props): string => props.size.toString()}px;
+    height: ${(props: Props): string => props.size.toString()}px;
+    background-color: ${(props: Props): string => getBackgroundColor(props.bgColor, props.selected)};
 `
 
 

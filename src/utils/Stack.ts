@@ -18,7 +18,7 @@ class Stack {
         }
     
         this.count--;
-        var result = this.storage[this.count];
+        const result = this.storage[this.count];
         delete this.storage[this.count];
         return result;
     }

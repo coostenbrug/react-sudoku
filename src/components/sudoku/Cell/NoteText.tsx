@@ -6,8 +6,8 @@ interface Props {
 const NoteText = styled.p`
     margin: 0;
     position: absolute;
-    top: ${(props: Props) => [4,22,39][Math.floor(props.position/3)]+"px"};
-    left: ${(props: Props) => [4,23,42][props.position % 3]+"px"};
+    top: ${(props: Props): string => [4,22,39][Math.floor(props.position/3)]+"px"};
+    left: ${(props: Props): string => [4,23,42][props.position % 3]+"px"};
     width: 10;
     height: 14;
     font-size: 14px;

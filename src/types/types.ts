@@ -5,7 +5,7 @@ export interface CellDataState {
     memory: {
         undo: Stack;
         redo: Stack;
-    }
+    };
 }
 
 export interface Action {
@@ -13,7 +13,7 @@ export interface Action {
     cell?: {
         x: number;
         y: number;
-    }
+    };
     input?: any;
 }
 

@@ -33,7 +33,7 @@ ControlButtonWrapper.defaultProps = {
     width: 48,
     pressed: false,
     disabled: false,
-    onClick: ()=>{}
+    onClick: (): void=>{return}
 }
 
 export default ControlButtonWrapper

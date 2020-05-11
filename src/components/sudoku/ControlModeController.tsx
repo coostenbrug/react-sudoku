@@ -1,25 +1,44 @@
 import React from "react"
 
 interface KeyMap {
-    [propName: string]: any;
+    [propName: string]: number;
 }
 
 const controlModeKeyMap: KeyMap = {z: 0, x: 1, c: 2}
 
 interface Props {
-    children: Function
+    children: Function;
 }
 
-const ControlModeController = ({children}: Props) => {
+const ControlModeController = ({children}: Props): React.ReactElement => {
 
     const [defaultMode, setDefaultMode] = React.useState<number>(0)
     const [controlMode, setControlMode] = React.useState<number>(defaultMode)
     const [heldModes, setHeldModes] = React.useState<boolean[]>([])
 
+    const updateHeldModes = (mode: number, value: boolean): void => {
+        const newHeldModes: boolean[] = [...heldModes]
+        newHeldModes[mode] = value
+        setHeldModes(newHeldModes)
+    }
+
+    const handleKeyDown = (e: KeyboardEvent): void => {
+        if (Object.keys(controlModeKeyMap).includes(e.key)) {
+            updateHeldModes(controlModeKeyMap[e.key], true)
+            setControlMode(controlModeKeyMap[e.key])
+        }
+    }
+
+    const handleKeyUp = (e: KeyboardEvent): void => {
+        if (Object.keys(controlModeKeyMap).includes(e.key)) {
+            updateHeldModes(controlModeKeyMap[e.key], false)
+        }
+    }
+
     React.useEffect(() => {
         document.addEventListener("keydown", handleKeyDown);
         document.addEventListener("keyup", handleKeyUp);
-        return () => {
+        return (): void => {
             document.removeEventListener("keydown", handleKeyDown);
             document.removeEventListener("keyup", handleKeyUp);
         }
@@ -40,26 +59,7 @@ const ControlModeController = ({children}: Props) => {
         }
     },[heldModes])
 
-    const updateHeldModes = (mode: number, value: boolean) => {
-        let newHeldModes: boolean[] = [...heldModes]
-        newHeldModes[mode] = value
-        setHeldModes(newHeldModes)
-    }
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-        if (Object.keys(controlModeKeyMap).includes(e.key)) {
-            updateHeldModes(controlModeKeyMap[e.key], true)
-            setControlMode(controlModeKeyMap[e.key])
-        }
-    }
-
-    const handleKeyUp = (e: KeyboardEvent) => {
-        if (Object.keys(controlModeKeyMap).includes(e.key)) {
-            updateHeldModes(controlModeKeyMap[e.key], false)
-        }
-    }
-
-    const setControlModeAndDefaultMode = (input: number) => {
+    const setControlModeAndDefaultMode = (input: number): void=> {
         setControlMode(input)
         setDefaultMode(input)
     }

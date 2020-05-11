@@ -14,22 +14,21 @@ interface Props {
     keys?: string[];
 }
 
-const ControlButton = (props: Props) => {
-    
+const ControlButton = (props: Props): React.ReactElement=> {
     const buttonRef: Ref<HTMLButtonElement> = React.useRef(null)
+
+    const handleKeyDown = (e: KeyboardEvent): void => {
+        if (props.keys && props.keys.includes(e.key)) {
+            if (buttonRef.current !== null) {buttonRef.current?.click()}
+        }
+    } 
 
     React.useEffect(() => {
         document.addEventListener("keydown", handleKeyDown);
-        return () => {
+        return (): void => {
             document.removeEventListener("keydown", handleKeyDown);
         }
     })
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-        if (props.keys && props.keys.includes(e.key)) {
-            if (buttonRef.current !== null) {buttonRef.current!.click()}
-        }
-    } 
 
     return (
     <ControlButtonWrapper
@@ -53,7 +52,7 @@ ControlButton.defaultProps = {
     pressed: false,
     controlMode: 0,
     disabled: false,
-    onClick: () => {}
+    onClick: (): void => {return}
 }
 
 export default ControlButton

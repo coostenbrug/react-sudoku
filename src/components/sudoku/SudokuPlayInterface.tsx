@@ -8,19 +8,19 @@ import { BoardData, Cell } from "../../types/types"
 interface Props {
     data: {
         boardData: BoardData;
-        cellData: CellArray | Cell[][] | Object[][];
-    },
+        cellData: CellArray | Cell[][] | Record<string, any>[][];
+    };
     controlMode: number;
     setControlMode: Function;
 }
 
-const SudokuPlayInterface = (props: Props) => {
+const SudokuPlayInterface = (props: Props): React.ReactElement => {
     const { data, controlMode, setControlMode } = props
     
     const [cellData, dispatchCellData] = React.useReducer(cellDataReducer,{data: new CellArray(data.cellData), memory: {undo: new Stack(), redo: new Stack()}})
     const [isSelecting, setIsSelecting] = React.useState(true)
       
-    const handleCellMouseDown = (e: MouseEvent, x: number, y: number) => {
+    const handleCellMouseDown = (e: MouseEvent, x: number, y: number): void => {
         if (e.buttons === 1) {
             e.preventDefault()
             if (e.ctrlKey) {
@@ -33,13 +33,13 @@ const SudokuPlayInterface = (props: Props) => {
         }
     }
 
-    const handleCellMouseEnter = (e: MouseEvent, x: number, y: number) => {
+    const handleCellMouseEnter = (e: MouseEvent, x: number, y: number): void => {
         if (e.buttons === 1) {
             dispatchCellData({type: "SET_SEL", cell: {x: x, y: y}, input: isSelecting})
         }
     }
 
-    const modifyCellContents = (input: string) => {
+    const modifyCellContents = (input: string): void => {
         switch (controlMode) {
             default:
             case 0:
@@ -61,10 +61,10 @@ const SudokuPlayInterface = (props: Props) => {
 
     const controlPanelFunctions = {
         modifyCellContents,
-        clearCellContents: function() {dispatchCellData({type: "CLEAR_SEL_CELLS"})},
+        clearCellContents: function(): void {dispatchCellData({type: "CLEAR_SEL_CELLS"})},
         setControlMode,
-        undo: function() {dispatchCellData({type: "MEM_UNDO"})},
-        redo: function() {dispatchCellData({type: "MEM_REDO"})}
+        undo: function(): void {dispatchCellData({type: "MEM_UNDO"})},
+        redo: function(): void {dispatchCellData({type: "MEM_REDO"})}
     }
 
     const controlPanelState = {

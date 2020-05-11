@@ -2,15 +2,70 @@ import _ from "lodash"
 import { Cell, CellDataState, Action } from "../../types/types"
 import { CellArray } from "../../utils"
 
+function saveMemory(state: CellDataState, stack: string, cellArray: CellArray): void {
+    const saveMemory = _.cloneDeep(cellArray)
+    if (stack === "undo") {
+        state.memory.undo.push(saveMemory)
+    } else {
+        state.memory.redo.push(saveMemory)
+    }
+}
 
-function cellDataReducer(state: CellDataState, action: Action) {
+function applyMemory(state: CellDataState, memory: CellArray): void {
+    state.data.forEachCell((cell: Cell, i: number, j: number) => {
+        cell.value = memory[i][j].value
+        cell.notes = memory[i][j].notes
+        cell.bgColor= memory[i][j].bgColor
+    })
+}
 
-    let newState = _.cloneDeep(state)
+function cellIsEmpty(cell: Cell): boolean {
+    return (
+        cell.value === undefined
+        && 
+        (
+            cell.notes === undefined 
+            || 
+            cell.notes?.every((note: boolean) => note === false
+            )
+        )
+    )
+}
+
+function deepCompareStateData(state: CellDataState, newState: CellDataState): CellDataState {
+
+    let shouldUpdate = false
+
+    state.data.forEachCell((cell: Cell, i: number, j: number) => {
+        if(
+            cell.value !== newState.data[i][j].value
+            ||
+            cell.notes !== newState.data[i][j].notes
+            ||
+            cell.bgColor !== newState.data[i][j].bgColor
+            ) {
+
+            shouldUpdate = true
+        }
+    })
+
+    if (shouldUpdate) {
+        saveMemory(newState, "undo", state.data)
+        newState.memory.redo.clear()
+        return newState
+    } else {
+        return state
+    }
+}
+
+function cellDataReducer(state: CellDataState, action: Action): CellDataState {
+
+    const newState = _.cloneDeep(state)
 
     switch (action.type) {
         //Toggle value of selected cells
         case "TOGGLE_SEL_CELLS_VALUE": {
-            let shouldEraseValue = state.data.queriedCellsAllHaveProperty(
+            const shouldEraseValue = state.data.queriedCellsAllHaveProperty(
                 (cell: Cell)=>(cell.value !== action.input),
                 (cell: Cell)=>(cell.selected && !cell.locked),
             )
@@ -31,7 +86,7 @@ function cellDataReducer(state: CellDataState, action: Action) {
 
         //Toggle notes of selected cells 
         case "TOGGLE_SEL_CELLS_NOTE": {
-            let shouldEraseNote = state.data.queriedCellsAllHaveProperty(
+            const shouldEraseNote = state.data.queriedCellsAllHaveProperty(
                 (cell: Cell)=>(!cell.notes || !cell.notes[action.input]),
                 (cell: Cell)=>(cell.selected && !cell.locked && !cell.value)
               )
@@ -95,14 +150,20 @@ function cellDataReducer(state: CellDataState, action: Action) {
 
         //Set a cell to selected/not selected
         case "SET_SEL": {
-            newState.data[action.cell!.x][action.cell!.y].selected = action.input
-            return newState
+            if (action.cell !== undefined) {
+                newState.data[action.cell.x][action.cell.y].selected = action.input
+                return newState
+            }
+            return state
         }
 
         //Set a cell to the opposite selected state
         case "TOGGLE_SEL": {
-            newState.data[action.cell!.x][action.cell!.y].selected = !state.data[action.cell!.x][action.cell!.y].selected
-            return newState
+            if (action.cell !== undefined) {
+                newState.data[action.cell.x][action.cell.y].selected = !state.data[action.cell.x][action.cell.y].selected
+                return newState
+            } 
+            return state
         }
 
         //Set all cells to not selected and the passed cell to selected
@@ -110,13 +171,16 @@ function cellDataReducer(state: CellDataState, action: Action) {
             newState.data.forEachCell((cell: Cell)=>{
                 cell.selected = false
             })
-            newState.data[action.cell!.x][action.cell!.y].selected = true
-            return newState
+            if (action.cell !== undefined) {
+                newState.data[action.cell.x][action.cell.y].selected = true
+                return newState
+            }
+            return state
         }
 
         //Apply the top of the undo stack to board data, and save it to redo stack
         case "MEM_UNDO": {
-            let undoMemory = newState.memory.undo.pop()
+            const undoMemory = newState.memory.undo.pop()
             if (undoMemory) {
                 saveMemory(newState, "redo", state.data)
                 applyMemory(newState, undoMemory)
@@ -127,7 +191,7 @@ function cellDataReducer(state: CellDataState, action: Action) {
 
         //Apply the top of the redo stack to board data, and save it to undo stack
         case "MEM_REDO": {   
-            let redoMemory = newState.memory.redo.pop()
+            const redoMemory = newState.memory.redo.pop()
             if (redoMemory) {
                 saveMemory(newState, "undo", state.data)
                 applyMemory(newState, redoMemory)
@@ -140,62 +204,5 @@ function cellDataReducer(state: CellDataState, action: Action) {
         }
     }
 }
-
-function saveMemory(state: CellDataState, stack: string, cellArray: CellArray) {
-    const saveMemory = _.cloneDeep(cellArray)
-    if (stack === "undo") {
-        state.memory.undo.push(saveMemory)
-    } else {
-        state.memory.redo.push(saveMemory)
-    }
-}
-
-function applyMemory(state: CellDataState, memory: CellArray) {
-    state.data.forEachCell((cell: Cell, i: number, j: number) => {
-        cell.value = memory[i][j].value
-        cell.notes = memory[i][j].notes
-        cell.bgColor= memory[i][j].bgColor
-    })
-}
-
-function cellIsEmpty(cell: Cell) {
-    return (
-        cell.value === undefined
-        && 
-        (
-            cell.notes === undefined 
-            || 
-            cell.notes?.every((note: boolean) => note === false
-            )
-        )
-    )
-}
-
-function deepCompareStateData(state: CellDataState, newState: CellDataState) {
-
-    let shouldUpdate = false
-
-    state.data.forEachCell((cell: Cell, i: number, j: number) => {
-        if(
-            cell.value !== newState.data[i][j].value
-            ||
-            cell.notes !== newState.data[i][j].notes
-            ||
-            cell.bgColor !== newState.data[i][j].bgColor
-            ) {
-
-            shouldUpdate = true
-        }
-    })
-
-    if (shouldUpdate) {
-        saveMemory(newState, "undo", state.data)
-        newState.memory.redo.clear()
-        return newState
-    } else {
-        return state
-    }
-}
-
 
 export default cellDataReducer
