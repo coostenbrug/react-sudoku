@@ -8,7 +8,7 @@ class CellArray extends Array {
         })
     }
 
-    queriedCellsAllHaveProperty(query: Function, property: Function) {
+    queriedCellsAllHaveProperty(query: Function, property: Function): boolean {
         let allHaveProperty = true
         this.forEachCell((cell: Cell)=>{
             if(query(cell)) {
@@ -18,7 +18,7 @@ class CellArray extends Array {
         return allHaveProperty
     }
 
-    forEachCell(fnc: Function) {
+    forEachCell(fnc: Function): void {
         this.forEach((row,i) => {
             row.forEach((cell: Cell, j: number) => {
                 fnc(cell,i,j)

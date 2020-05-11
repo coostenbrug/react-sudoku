@@ -7,12 +7,12 @@ class Stack {
         this.storage = []
     }
 
-    push(value: any) {
+    push(value: any): void {
         this.storage[this.count] = value
         this.count++;
     }
 
-    pop() {
+    pop(): any {
         if (this.count === 0) {
             return undefined;
         }
@@ -23,7 +23,7 @@ class Stack {
         return result;
     }
 
-    peek() {
+    peek(): any {
         if (this.count === 0) {
             return undefined;
         }
@@ -31,11 +31,11 @@ class Stack {
         return this.storage[this.count-1];
     }
     
-    size() {
+    size(): number {
         return this.count;
     }
 
-    clear() {
+    clear(): void {
         for (let i = 0; i < this.count; i++) {
             delete this.storage[i];
             this.count = 0;
