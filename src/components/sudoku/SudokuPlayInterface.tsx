@@ -19,11 +19,6 @@ const SudokuPlayInterface = (props: Props) => {
     
     const [cellData, dispatchCellData] = React.useReducer(cellDataReducer,{data: new CellArray(data.cellData), memory: {undo: new Stack(), redo: new Stack()}})
     const [isSelecting, setIsSelecting] = React.useState(true)
-
-    React.useEffect(() => {
-        document.addEventListener("keydown", handleKeyDown);
-        return () => document.removeEventListener("keydown", handleKeyDown);
-    })
       
     const handleCellMouseDown = (e: MouseEvent, x: number, y: number) => {
         if (e.buttons === 1) {
@@ -55,31 +50,6 @@ const SudokuPlayInterface = (props: Props) => {
                 break;
             case 2:
                 dispatchCellData({type: "SET_SEL_CELLS_COLOR", input: input})
-                break;
-        }
-    }
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-        console.log(e.key)
-        switch (e.key) {
-            case "1":
-            case "2":
-            case "3":
-            case "4":
-            case "5":
-            case "6":
-            case "7":
-            case "8":
-            case "9":
-                modifyCellContents(e.key)
-                break;
-
-            case "Delete":
-            case "Backspace":
-                dispatchCellData({type: "CLEAR_SEL_CELLS"})
-                break;
-                
-            default:
                 break;
         }
     }

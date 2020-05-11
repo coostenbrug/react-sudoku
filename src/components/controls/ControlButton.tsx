@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Ref } from "react"
 import ControlButtonWrapper from "./ControlButtonWrapper"
 import ControlButtonText from "./ControlButtonText"
 
@@ -11,22 +11,39 @@ interface Props {
     disabled?: boolean;
     onClick?: () => void;
     color?: string;
+    keys?: string[];
 }
 
-const ControlButton = (props: Props) => (
+const ControlButton = (props: Props) => {
+    
+    const buttonRef: Ref<HTMLButtonElement> = React.useRef(null)
+
+    React.useEffect(() => {
+        document.addEventListener("keydown", handleKeyDown);
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    })
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+        if (props.keys && props.keys.includes(e.key)) {
+            if (buttonRef.current !== null) {buttonRef.current!.click()}
+        }
+    } 
+
+    return (
     <ControlButtonWrapper
       height={props.height}
       width={props.width}
       pressed={props.pressed}
       disabled={props.disabled}
       onClick={props.onClick}
+      ref={buttonRef}
     >
         <ControlButtonText
           controlMode={props.controlMode}
           color={props.color}
           >{props.children}</ControlButtonText>
     </ControlButtonWrapper>
-)
+)}
 
 ControlButton.defaultProps = {
     height: 48,

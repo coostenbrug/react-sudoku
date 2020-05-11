@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { theme } from "../../resources"
+import { Ref } from "react"
 
 interface Props {
     height?: number;
@@ -7,6 +8,7 @@ interface Props {
     pressed?: boolean;
     disabled?: boolean;
     onClick?: Function;
+    ref: Ref<HTMLButtonElement>;
 }
 
 const ControlButtonWrapper = styled.button<Props>((props: Props)=>({
