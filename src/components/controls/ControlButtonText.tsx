@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { theme } from "../../resources"
+import { mix } from "chroma-js"
 
 interface Props {
     controlMode?: number;
@@ -25,13 +26,15 @@ const getStyleByControlMode = (controlMode?: number, color?: string) => {
             return `font-size: 0px;
                 ::before {
                     position: absolute;
-                    top: 2px;
-                    left: 2px;
+                    top: 3px;
+                    left: 3px;
                     content: "";
-                    width: 40px;
-                    height: 40px;
+                    width: 38px;
+                    height: 38px;
                     background: ${color};
-                    border-radius: 6px;
+                    border-radius: 5px;
+                    border: solid 2px ${mix(color!, "black").toString()};
+                    box-sizing: border-box;
                 }
             `
         }
