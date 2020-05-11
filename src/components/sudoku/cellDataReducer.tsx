@@ -79,26 +79,46 @@ function cellDataReducer(state: CellDataState, action: Action) {
 
         //Clear value and notes of selected cells (first saves undo memory and clears redo memory)
         case "CLEAR_SEL_CELLS": {
-            // return no change if cells are already clear
-            let noChange = true
+            let noValueChange = true
             state.data.forEachCell((cell: Cell) => {
                 if (cell.selected && !cell.locked && !cellIsEmpty(cell)) {
-                    noChange = false
+                    noValueChange = false
                 } 
             })
 
-            if (noChange) {return state}
+            if (noValueChange) {
+                let noColorChange = true
+                state.data.forEachCell((cell: Cell) => {
+                    if (cell.selected && cell.bgColor !== 1) {
+                        noColorChange = false
+                    } 
+                })
 
-            saveMemory(newState, "undo", state.data)
-            newState.memory.redo.clear()
-
-            newState.data.forEachCell((cell: Cell)=>{
-                if (cell.selected && !cell.locked) {
-                    cell.value = undefined
-                    cell.notes = []
+                if (noColorChange) {
+                    return state
+                } else {
+                    saveMemory(newState, "undo", state.data)
+                    newState.memory.redo.clear()
+    
+                    newState.data.forEachCell((cell: Cell)=>{
+                        if (cell.selected) {
+                            cell.bgColor = 1
+                        }
+                    })
+                    return newState
                 }
-            })
-            return newState
+            } else {
+                saveMemory(newState, "undo", state.data)
+                newState.memory.redo.clear()
+
+                newState.data.forEachCell((cell: Cell)=>{
+                    if (cell.selected && !cell.locked) {
+                        cell.value = undefined
+                        cell.notes = []
+                    }
+                })
+                return newState
+            }
         }
 
         //Set a cell to selected/not selected

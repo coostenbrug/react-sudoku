@@ -60,6 +60,7 @@ const SudokuPlayInterface = (props: Props) => {
     }
 
     const handleKeyDown = (e: KeyboardEvent) => {
+        console.log(e.key)
         switch (e.key) {
             case "1":
             case "2":
