@@ -20,10 +20,8 @@ const ControlButton = (props: Props) => {
 
     React.useEffect(() => {
         document.addEventListener("keydown", handleKeyDown);
-        document.addEventListener("keyup", handleKeyUp);
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
-            document.removeEventListener("keyup", handleKeyUp);
         }
     })
 
@@ -31,10 +29,6 @@ const ControlButton = (props: Props) => {
         if (props.keys && props.keys.includes(e.key)) {
             if (buttonRef.current !== null) {buttonRef.current!.click()}
         }
-    } 
-
-    const handleKeyUp = (e: KeyboardEvent) => {
-        // "unclick" the button
     } 
 
     return (
