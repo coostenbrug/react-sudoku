@@ -3,8 +3,8 @@ import { CellArray, Stack } from "../utils";
 export interface CellDataState {
     data: CellArray;
     memory: {
-        undo: Stack;
-        redo: Stack;
+        undo: Stack<CellArray>;
+        redo: Stack<CellArray>;
     };
 }
 

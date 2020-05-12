@@ -1,18 +1,18 @@
-class Stack {
+class Stack<T> {
     private count: number;
-    private storage: any[];
+    private storage: T[];
     
     constructor() {
         this.count = 0
         this.storage = []
     }
 
-    push(value: any): void {
+    push(value: T): void {
         this.storage[this.count] = value
         this.count++;
     }
 
-    pop(): any {
+    pop(): T | undefined {
         if (this.count === 0) {
             return undefined;
         }
@@ -23,7 +23,7 @@ class Stack {
         return result;
     }
 
-    peek(): any {
+    peek(): T | undefined {
         if (this.count === 0) {
             return undefined;
         }

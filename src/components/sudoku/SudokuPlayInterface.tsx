@@ -17,7 +17,7 @@ interface Props {
 const SudokuPlayInterface = (props: Props): React.ReactElement => {
     const { data, controlMode, setControlMode } = props
     
-    const [cellData, dispatchCellData] = React.useReducer(cellDataReducer,{data: new CellArray(data.cellData), memory: {undo: new Stack(), redo: new Stack()}})
+    const [cellData, dispatchCellData] = React.useReducer(cellDataReducer,{data: new CellArray(data.cellData), memory: {undo: new Stack<CellArray>(), redo: new Stack<CellArray>()}})
     const [isSelecting, setIsSelecting] = React.useState(true)
       
     const handleCellMouseDown = (e: MouseEvent, x: number, y: number): void => {
