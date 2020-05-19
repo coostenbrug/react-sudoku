@@ -36,6 +36,7 @@ interface Props {
         setControlMode: Function;
         undo: Function;
         redo: Function;
+        checkBasicSudoku: Function;
     };
     stateProps: {
         controlMode: number;
@@ -52,7 +53,8 @@ const ControlPanel = (props: Props): React.ReactElement => {
         clearCellContents,
         setControlMode,
         undo,
-        redo
+        redo,
+        checkBasicSudoku
     } = props.functions
     
     const {
@@ -76,11 +78,14 @@ const ControlPanel = (props: Props): React.ReactElement => {
                 <ControlButton keys={["Delete","Backspace"]} controlMode={-1} onClick={function(): void {clearCellContents()}}>X</ControlButton>
             </ControlPanelRow>
             <ControlPanelRow>
-                <ControlButton controlMode={-1} pressed={controlMode === 0} width={100} onClick={function(): void {setControlMode(0)}}>Ans</ControlButton>
-                <ControlButton controlMode={-1} pressed={controlMode === 1} width={100} onClick={function(): void {setControlMode(1)}}>Note</ControlButton>
-                <ControlButton controlMode={-1} pressed={controlMode === 2} width={100} onClick={function(): void {setControlMode(2)}}>Color</ControlButton>
-                <ControlButton keys={[","]} controlMode={-1} disabled={undoDisabled} width={100} onClick={function(): void {undo()}}>Undo</ControlButton>
-                <ControlButton keys={["."]} controlMode={-1} disabled={redoDisabled} width={100} onClick={function(): void {redo()}}>Redo</ControlButton>
+                <ControlButton pressed={controlMode === 0} width={100} onClick={function(): void {setControlMode(0)}}>Ans</ControlButton>
+                <ControlButton pressed={controlMode === 1} width={100} onClick={function(): void {setControlMode(1)}}>Note</ControlButton>
+                <ControlButton pressed={controlMode === 2} width={100} onClick={function(): void {setControlMode(2)}}>Color</ControlButton>
+            </ControlPanelRow>
+            <ControlPanelRow>
+                <ControlButton keys={[","]} disabled={undoDisabled} width={100} onClick={function(): void {undo()}}>Undo</ControlButton>
+                <ControlButton keys={["."]} disabled={redoDisabled} width={100} onClick={function(): void {redo()}}>Redo</ControlButton>
+                <ControlButton width={100} onClick={function(): void {checkBasicSudoku()}}>Check</ControlButton>
             </ControlPanelRow>
         </ControlPanelWrapper>
     )

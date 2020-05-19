@@ -4,6 +4,7 @@ import { ControlPanel } from "../controls"
 import { CellArray, Stack } from "../../utils"
 import cellDataReducer from "./cellDataReducer"
 import { BoardData, Cell } from "../../types/types"
+import { checkBasicSudoku } from "../../utils/sudokuFunctions"
 
 interface Props {
     data: {
@@ -65,7 +66,8 @@ const SudokuPlayInterface = (props: Props): React.ReactElement => {
         clearCellContents: function(): void {dispatchCellData({type: "CLEAR_SEL_CELLS"})},
         setControlMode,
         undo: function(): void {dispatchCellData({type: "MEM_UNDO"})},
-        redo: function(): void {dispatchCellData({type: "MEM_REDO"})}
+        redo: function(): void {dispatchCellData({type: "MEM_REDO"})},
+        checkBasicSudoku: function(): void {alert(checkBasicSudoku(cellData.data))}
     }
 
     const controlPanelState = {

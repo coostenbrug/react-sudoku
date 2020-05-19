@@ -50,7 +50,7 @@ ControlButton.defaultProps = {
     height: 48,
     width: 48,
     pressed: false,
-    controlMode: 0,
+    controlMode: -1,
     disabled: false,
     onClick: (): void => {return}
 }
