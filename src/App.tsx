@@ -43,7 +43,7 @@ function App(): React.ReactElement {
         <>
           <Header isPaused={isPaused} setIsPaused={setIsPaused}/>
           <PageWrapper> 
-            <Sudoku data={exampleSudokuData}/>
+            <Sudoku data={exampleSudokuData} isPaused={isPaused}/>
           </PageWrapper>
         </>)}
       </GameStateManager>

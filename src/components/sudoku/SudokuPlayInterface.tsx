@@ -12,6 +12,7 @@ interface Props {
     };
     controlMode: number;
     setControlMode: Function;
+    isPaused: boolean;
 }
 
 const SudokuPlayInterface = (props: Props): React.ReactElement => {
@@ -75,8 +76,13 @@ const SudokuPlayInterface = (props: Props): React.ReactElement => {
 
     return(
     <div style={{display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
-        <SudokuBoard boardData={data.boardData} cellData={cellData.data} cellFunctions={cellFunctions}/>
-        <ControlPanel stateProps={controlPanelState} functions={controlPanelFunctions}/>
+        {props.isPaused ? 
+        <p>Paused</p>
+        :
+        <>
+            <SudokuBoard boardData={data.boardData} cellData={cellData.data} cellFunctions={cellFunctions}/>
+            <ControlPanel stateProps={controlPanelState} functions={controlPanelFunctions}/>
+        </>}
     </div>
 )}
 

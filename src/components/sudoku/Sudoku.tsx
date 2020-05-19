@@ -8,7 +8,8 @@ interface Props {
     data: {
         boardData: BoardData;
         cellData: CellArray | Cell[][] | Record<string, any>[][];
-    }; 
+    };
+    isPaused: boolean;
 }
 
 interface ControlModeControllerProps {
@@ -18,7 +19,7 @@ interface ControlModeControllerProps {
 
 const Sudoku = (props: Props): React.ReactElement => (
     <ControlModeController>{({controlMode, setControlMode}: ControlModeControllerProps): React.ReactElement =>
-        <SudokuPlayInterface data={props.data} controlMode={controlMode} setControlMode={setControlMode}/>
+        <SudokuPlayInterface isPaused={props.isPaused} data={props.data} controlMode={controlMode} setControlMode={setControlMode}/>
     }</ControlModeController>
 )
 
