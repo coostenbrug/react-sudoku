@@ -3,10 +3,15 @@ import styled from "styled-components"
 import { Sudoku } from './components/sudoku';
 import { exampleSudokuData, theme } from "./resources"
 import { ThemeProvider, createGlobalStyle } from "styled-components"
+import { Header } from "./components/header"
 import { Helmet } from "react-helmet"
 
 const PageWrapper = styled.div({
-  padding: "40px"
+  padding: "60px 0",
+  minHeight: "calc(100vh - 120px)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center"
 })
 
 const GlobalStyle = createGlobalStyle({
@@ -26,7 +31,8 @@ function App(): React.ReactElement {
         <title>Sudoku</title>
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap" rel="stylesheet"/>      </Helmet>
       <GlobalStyle/>
-      <PageWrapper>
+      <Header/>
+      <PageWrapper> 
         <Sudoku data={exampleSudokuData}/>
       </PageWrapper>
     </ThemeProvider>
