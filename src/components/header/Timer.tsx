@@ -1,22 +1,53 @@
 import React from "react"
+import TimerButton from "./TimerButton"
+import TimerText from "./TimerText"
 
-const Timer = (): React.ReactElement => {
+interface Props {
+    isPaused: boolean;
+    setIsPaused: Function;
+}
+
+interface Timer extends React.FunctionComponent{
+    timer: number;
+}
+
+const Timer = ({isPaused, setIsPaused}: Props): React.ReactElement => {
 
     const [time, setTime] = React.useState(0)
 
     function startTimer(): void {
-        setInterval(()=> setTime(prev => prev + 1),1000)
+        Timer.timer = setInterval(()=> setTime(prev => prev + 1),1000)
     } 
 
+    function stopTimer(): void {
+        clearInterval(Timer.timer)
+    }
+
     React.useEffect(()=>{
-        startTimer()
-    },[])
+        if (isPaused) {
+            stopTimer()
+        } else {
+            startTimer()
+        }
+        return((): void => {
+            stopTimer()
+        })
+    },[isPaused])
 
     return(
-        <p>
-            {new Date(time * 1000).toISOString().substr(11, 8)}
-        </p>
+        <div>
+            <TimerText>
+                {new Date(time * 1000).toISOString().substr(11, 8)}
+            </TimerText>
+            <TimerButton onClick={(): void => {
+                    setIsPaused(!isPaused)
+                    console.log(isPaused)}}>
+                {isPaused ? "R" : "P"}
+            </TimerButton>
+        </div>
     )
 }
+
+Timer.timer = 0
 
 export default Timer

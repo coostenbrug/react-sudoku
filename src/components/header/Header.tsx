@@ -2,10 +2,15 @@ import React from "react"
 import HeaderDiv from "./HeaderDiv"
 import Timer from "./Timer"
 
-const Header = (): React.ReactElement => {
+interface Props {
+    isPaused: boolean;
+    setIsPaused(arg0: boolean): void;
+}
+
+const Header = ({isPaused, setIsPaused}: Props): React.ReactElement => {
     return(
         <HeaderDiv>
-            <Timer/>
+            <Timer isPaused={isPaused} setIsPaused={setIsPaused}/>
         </HeaderDiv>
     )
 }
